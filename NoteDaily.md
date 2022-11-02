@@ -62,7 +62,7 @@ class Board extends React.Component {
 
 # 11.2
 
-## react day 2
+## react day 3
 
 1. react 多次渲染同一个组件，该组件会获得自己的状态 state
 
