@@ -58,14 +58,44 @@ class Board extends React.Component {
 
 8. react 标签必须大写开头
 
-9. JSX 的语法比 HTML 更严格。类似 <br /> 这样的标签是必须要关闭的。并且，组件也不能返回多个并列最高层级的 JSX 标签，你必须为所有最高层级的标签添加一个共同的父标签，例如使用 <div>...</div> 或 <>...</> 作为父标签：
+9. JSX 的语法比 HTML 更严格。类似 <br /> 这样的标签是必须要关闭的。并且，组件也不能返回多个并列最高层级的 JSX 标签，你必须为所有最高层级的标签添加一个共同的父标签，例如使用 <div>...</div> 或 作为父标签：
 
 # 11.2
 
 ## react day 3
 
+## Next.js day0
+
 1. react 多次渲染同一个组件，该组件会获得自己的状态 state
 
-2. 钩子hooks 
-只有class组件有生命周期，函数式组件没有
+2. 钩子 hooks
+   只有 class 组件有生命周期，函数式组件没有
 
+3. SPA 页面，不切换 HTML 来显示内容
+
+#### react 设计哲学
+
+1. 分解组件
+   单一责任
+2. use state
+   把 state 直接放在函数里面
+
+# 11.3
+
+## react day4
+
+## doc review
+
+1. npx npm 附带的 package 运行工具
+
+#### why JSX?
+
+React 认为渲染逻辑本质上与其他 UI 逻辑内在耦合。
+
+本质为
+`React.createElement(component, props, ...children)`
+
+在 JSX 语法中，你可以在大括号内放置任何有效的 JavaScript 表达式。
+`const name = 'Josh Perez'; const element = <h1>Hello, {name}</h1>;`
+
+tip:将内容包裹在括号中
