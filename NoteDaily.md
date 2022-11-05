@@ -98,4 +98,6 @@ React 认为渲染逻辑本质上与其他 UI 逻辑内在耦合。
 在 JSX 语法中，你可以在大括号内放置任何有效的 JavaScript 表达式。
 `const name = 'Josh Perez'; const element = <h1>Hello, {name}</h1>;`
 
-tip:将内容包裹在括号中
+tip:将内容包裹在括号中，防止分号干扰代码
+
+JSX 也是表达式，编译后作为普通 Javascript 函数调用，在其取值后得到 js 对象,可以使用 if，也就是说，你可以在 if 语句和 for 循环的代码块中使用 JSX，将 JSX 赋值给变量，把 JSX 当作参数传入，以及从函数中返回 JSX：
