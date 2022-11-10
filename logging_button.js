@@ -1,3 +1,6 @@
+//严格模式下，组件中的的this会默认显示undefined
+"use strict";
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10,24 +13,19 @@ var LoggingButton = function (_React$Component) {
   _inherits(LoggingButton, _React$Component);
 
   function LoggingButton() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
     _classCallCheck(this, LoggingButton);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LoggingButton.__proto__ || Object.getPrototypeOf(LoggingButton)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function () {
-      console.log("this is:", _this);
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    return _possibleConstructorReturn(this, (LoggingButton.__proto__ || Object.getPrototypeOf(LoggingButton)).apply(this, arguments));
   }
-  // This syntax ensures `this` is bound within handleClick.
-
 
   _createClass(LoggingButton, [{
+    key: "handleClick",
+
+    // This syntax ensures `this` is bound within handleClick.
+    value: function handleClick() {
+      console.log("this is:", this);
+    }
+  }, {
     key: "render",
     value: function render() {
       return React.createElement(

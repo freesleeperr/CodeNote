@@ -328,14 +328,24 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
 
 ##### JSX 中使用回调函数的 this 的方法
 
-在 react 的 class 组件中，方法函数中的 this 默认不会绑定 this，输出为
+在 react 的 class 组件中，方法函数中的 this 默认不会绑定 this
+严格模式：输出为 undefind
+非严格模式：输出为全局 window 对象
 
-_bind_
-ex`<button onClick={this.handleClick}></button>`，需要在 构造器中绑定 this,`.bind(this)`
+1. 构造器中绑定*bind*
+   ex`<button onClick={this.handleClick}></button>`，需要在 构造器中绑定 this,`.bind(this)`
 
-_public class field_
-create react app 默认启用
-ex:`handleClick=()=>{console.log(this)}`此处的 this 为 class 组件
+2. _public class field_
+   create react app 默认启用
+   ex:`handleClick=()=>{console.log(this)}`此处的 this 为 class 组件
 
-_在回调中使用箭头函数_
-` return ( <button onClick={() => this.handleClick()}> Click me </button> );`
+3. _在回调中使用箭头函数_
+   ` return ( <button onClick={() => this.handleClick()}> Click me </button> );`
+
+##### 向事件处理程序传参
+
+` <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button> <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>`
+
+_bind 方式，id 为第 2 个参数，箭头函数方式，id 为第 1 个参数_
+
+React 的事件对象 e 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 bind 的方式，事件对象以及更多的参数将会被隐式的进行传递。
