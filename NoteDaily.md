@@ -231,11 +231,11 @@ state 是一个组件中配置的对象，ex：this.state={number：19}
 
 ##### function 组件转换为 class
 
-1.  创建一个同名的 ES6 class
-2.  添加一个空的 render()
-3.  把原函数体移动到 render()中
-4.  把 render()中的 this.props 替换为 props
-5.  删除剩余的空函数声明
+1. 创建一个同名的 ES6 class
+2. 添加一个空的 render()
+3. 把原函数体移动到 render()中
+4. 把 render()中的 this.props 替换为 props
+5. 删除剩余的空函数声明
 
 _React.createElement()是 JSX 中的底层实现方式_
 
@@ -311,7 +311,7 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
 
 子组件接收 props 时，无法确定该 props 的来源(手动输入，props，state)
 
-# 11.7
+# 11.8
 
 ## react day5
 
@@ -340,12 +340,293 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
    ex:`handleClick=()=>{console.log(this)}`此处的 this 为 class 组件
 
 3. _在回调中使用箭头函数_
-   ` return ( <button onClick={() => this.handleClick()}> Click me </button> );`
+   `return ( <button onClick={() => this.handleClick()}> Click me </button> );`
 
 ##### 向事件处理程序传参
 
-` <button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button> <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>`
+`<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button> <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>`
 
 _bind 方式，id 为第 2 个参数，箭头函数方式，id 为第 1 个参数_
 
-React 的事件对象 e 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 bind 的方式，事件对象以及更多的参数将会被隐式的进行传递。
+React 的事件对象 e 会被作为第二个参数传递。如果通过箭头函数的方式，事件对象必须显式的进行传递，而通过 bind 的方式，事件对象以及更多的参数将会被*隐式*的进行传递。
+
+## 条件渲染
+
+1. 组件中使用 if
+   根据条件 return 对应的值
+   `if (isLoggedIn) { button = <LogoutButton onClick={this.handleLogoutClick} />; } else { button = <LoginButton onClick={this.handleLoginClick} />; }`
+2. 与&&运算符
+   js 逻辑，与运算符会返回第一个 false 或者最后一个 true，`return ( <div> {count && <h1>Messages: {count}</h1>} </div>`
+3. 三元运算符
+   `return ( <div> {isLoggedIn ? <LogoutButton onClick={this.handleLogoutClick} /> : <LoginButton onClick={this.handleLoginClick} /> } </div> )`
+4. 不进行渲染
+   `return null`
+   _return null 不会影响生命周期_
+
+## 列表&Key
+
+可以使用迭代来构建 list
+
+```
+//提示需要 key
+const numbers = [1, 2, 3, 4, 5];
+const listItems = numbers.map((number) =>
+
+  <li>{number}</li>
+  <ul>{listItems}</ul>
+);
+```
+
+##### 列表中的 key
+
+key 帮助 React 识别哪些元素改变了，比如被添加或删除。因此你应当给数组中的每一个元素赋予一个确定的标识。
+
+通常使用数据中的 id 来作为 key，当没有 id 属性时，**万不得已**使用 index 来作为 key。
+原因：操作数据，如添加或删除项会导致 index 改变，与 react 的 diff 冲突，导致渲染错误。完全静态页面则可以忽略。
+
+##### key 提取组件
+
+**元素的 key 只有放在就近的数组上下文中才有意义。**
+例如：在 map 函数中指定 key，而在单独定义`<li>`时不需要指定。
+
+例如子组件中不需要指定 key，而在父组件的中指定
+
+_在 map 方法中的元素需要设置 key 属性_
+
+_key 值在兄弟节点之间必须唯一，但是不同的数组可以使用相同的 key_
+
+JSX 可以直接嵌套 map 来生成列表
+
+`return ( <ul> {numbers.map((number) => <ListItem key={number.toString()} value={number} /> )} </ul>`
+
+## 表单
+
+##### 受控组件
+
+`在 HTML 中，表单元素（如<input>、 <textarea> 和 <select>）通常自己维护 state，并根据用户输入进行更新。而在 React 中，可变状态（mutable state）通常保存在组件的 state 属性中，并且只能通过使用 setState()来更新。`
+
+使 state 成为唯一数据源，同时进行渲染和控制数据
+
+```class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('提交的名字: ' + this.state.value);
+    event.preventDefault();
+  }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          名字:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="提交" />
+      </form>
+    );
+  }
+}
+```
+
+_数据在表单 change 后更新 state，state 更新`<input>` value，达到用 state 来控制 input 目的_
+
+###### textarea
+
+在 HTML 中, `<textarea>` 元素通过其子元素定义其文本
+
+react 中可以使用 value 属性定义文本
+
+放在 state 的 value 在初始化的时候就能起作用，所以具有初值
+
+###### select
+
+在 react 中，不会使用 select 属性来默认选中，而是采用`<select>`标签中的 **value** 属性,也可以把**数组**传入 value，从而实现多项选择
+`总的来说，这使得 <input type="text">, <textarea> 和 <select> 之类的标签都非常相似—它们都接受一个 value 属性，你可以使用它来实现受控组件。`
+
+###### input type="file"
+
+通过`<input type="file">`来选择存储设备中的一个或多个文件，可以使用 js 的`file api`来控制。
+*因为 value 只读，所以为一个非受控组件*没法把 state 与 value 绑定。
+
+###### 受控组件的输入
+
+在受控组件上指定 value 的 prop 会阻止用户更改输入。如果你指定了 value，但输入仍可编辑，则可能是你意外地将 value 设置为 undefined 或 null。
+
+# 11.9
+
+## react day5
+
+## doc review
+
+## 状态提升
+
+应用场景：多个组件需要一个*相同的变化的*数据
+共享状态（state）提升到最近的父组件中，把 state 放在父组件，使用 props 与子组件交换数据。
+
+1. 子组件删除所有的 state，需要 state 的地方用 props 代替
+
+2. 父组件使用 useState，初始化一个需要共享的状态，并把共享的状态和 handler 传给子组件
+
+3. 子使用 props.setState 来改变父组件状态，再通过 props 同步父组件 state（类似于受控组件，但是 state 不在同一组件内）
+
+###### 总结
+
+_应该依赖自上而下的数据流，而不是尝试同步每个 state_
+
+1. 任何可变数据应该只有一个并且唯一的相对应的数据源
+
+2. 首先，数据源一般都是放在渲染数据的组件中
+
+3. 如果其他组件也需要这个 state，那么你可以将它提升至这些组件的最近共同父组件中
+
+4. 相比于把 state 双向绑定，会有更少的代码量，bug 也比较好排查
+
+## 组合 vs 继承
+
+#### 包含关系
+
+有些组件的子组件需要父组件指定
+
+```
+function FancyBorder(props) { return (
+  <div className={'FancyBorder FancyBorder-' + props.color}> {props.children} </div>
+  ); }
+```
+
+recommend:用一个特殊的`children`prop 来把子组件传递到渲染结果中，在方式上有点类似 vue 的`slot`
+
+使用 children slot 可以不考虑 props 的属性名，`<father>{props.children}</father>`
+
+使得任意组件都可以进行嵌套
+
+如果我们需要多个组件进行嵌套，可以自行约定名称不使用 children，再传入 props。
+
+_在 react 中，`<componet>`就是一个对象，所以可以作为 props 传给任何子组件_
+
+#### 特例关系
+
+可以用这种预留 props 的方式来制作自定义组件
+
+```function Dialog(props) {
+return (
+<FancyBorder color="blue">
+
+<h1 className="Dialog-title">
+{props.title}
+</h1>
+<p className="Dialog-message">
+{props.message}
+</p>
+</FancyBorder>
+);
+}
+
+function WelcomeDialog() {
+return (
+
+<Dialog
+      title="Welcome"
+      message="Thank you for visiting our spacecraft!" />
+);
+}
+```
+
+_组合同样适用于 class_
+
+#### 继承
+
+''在 Facebook，我们在成百上千个组件中使用 React。我们并没有发现需要使用继承来构建组件层次的情况。''
+
+Props 和组合为你提供了清晰而安全地定制组件外观和行为的灵活方式。
+**注意：组件可以接受任意 props，包括基本数据类型，React 元素以及函数。**
+
+如果想要复用非 ui 的功能，可以将其提取为 js 模块，通过 import 调用，而不是 extend。
+
+# 11.10
+
+## react day6
+
+## doc review
+
+## react 哲 ⚦ 学
+
+从设计稿开始：你现在拥有设计图，以及一个返回 JSON 的 API。
+
+#### 第一步：将设计好的 UI 划分为组件层级
+
+1. 切图
+   把设计稿的 ui 划分层级，画框，区分不同的层次
+   根据单一功能原则判定组件，一个组件只有一个功能。
+   比如，输入框负责输入 state
+   展示列表负责各个项目的展示
+   ![分割后的组件](https://zh-hans.reactjs.org/static/9381f09e609723a8bb6e4ba1a7713b46/90cbd/thinking-in-react-components.png)
+   确定结构
+
+- FilterableProductTable
+  - SearchBar
+  - ProductTable
+    - ProductCategoryRow
+    - ProductRow
+
+* 设计稿中被其他组件包含的子组件，在层级上应该作为其子节点 。\*
+
+#### 第二步： 创建一个静态版本
+
+最容易的方式，是先用已有的数据模型渲染一个不包含交互功能的 UI。最好将渲染 UI 和添加交互这两个过程分开。
+在构建应用的静态版本时，需要创建一些可以服用的组件。
+_构建静态版本时，不要使用 state，state 代表了随时间变化的数据_
+
+构建静态页面的两种方式
+
+- 自上而下
+  当应用比较简单时
+  优先编写层级较高的组件
+
+- 自下而上
+  当应用比较复杂时
+  优先编写层级较低的组件
+
+最顶层 APP 组件中接收数据模型，把 props 传给最顶层的自定义组件。通过单项数据流，把源数据向下传递给子组件。
+
+#### 第三步：确定最小的 UI state
+
+目的：实现交互功能需要有 state 的数据模型
+原则：DRY-don't repect yourself,只保留应用所需的**最小**可变 state，其他数据均由计算产生。
+
+**通过问自己以下三个问题，你可以逐个检查相应数据是否属于 state：**
+
+- 该数据是否是由父组件通过 props 传递而来的？如果是，那它应该不是 state。
+- 该数据是否随时间的推移而保持不变？如果是，那它应该也不是 state。
+- 你能否根据其他 state 或 props 计算出该数据的值？如果是，那它也不是 state。
+
+#### 第四步：确定 state 的位置
+
+（参见状态提升）
+对于应用中的每一个 state：
+
+- 找到根据这个 state 进行渲染的所有组件。
+  找到他们的共同所有者（common owner）组件（在组件层级上高于所有需要该 state 的组件）。
+  该共同所有者组件或者比它层级更高的组件应该拥有该 state。
+- 如果你找不到一个合适的位置来存放该 state，就可以直接创建一个新的组件来存放该 state，并将这一新组件置于高于共同所有者组件层级的位置。
+
+#### 第五步：添加反向数据流
+
+反向数据流即子组件通过父组件传入的 handler 或者 setState 函数来改变父组件中的 state（props 不能够被改变）
+
+- class 组件中：父组件中定义 handler，由于 class 组件中的方法没有自己的 state，作为回调函数在 onChange={func}中没有自身的 state，所以在组件中绑定（bind）this，来改变 this.state,使子组件能够改变父组件的数据。
+
+- function 组件中：由于使用 useState hook，直接把对应的 setState 穿给子组件就可以（推荐）
+
+#### THATS ALL
+
+核心概念篇，end
