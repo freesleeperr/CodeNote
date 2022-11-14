@@ -630,3 +630,181 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
 #### THATS ALL
 
 核心概念篇，end
+
+s# 11.14
+
+## react day6
+
+## doc review
+
+## 高级指引
+
+## Ref
+
+#### 什么是 ref
+
+在典型的 React 数据流中，props 是父组件与子组件交互的唯一方式
+
+ref 属性表示 react 对组件真正实例的引用，其实就是 ReactDOM.render()返回的组件实例。
+
+使用方式：
+
+1. 调用 react.creatRef 创建一个 ref 并赋值给 ref 变量
+   `const inputRef = useRef()或者const inputRef = createRef()`
+2. 传给想要获取元素的 DOM 节点`<FancyButton ref={inputref}>`
+3. ref.current 能调用子组件的方法，可以继续链式调用到孙子组件的方法
+
+或者使用回调来设置 ref
+
+#### ref 转发
+
+如果父组件要获取子组件的 DOM，需要进行 ref 转发
+`React.forwardRef((props,ref)=>(render所返回的组件))`
+返回的组件接收一个`ref`属性，`ref.current`可以调用子组件上的方法，直接操作 DOM。
+
+#### render props
+
+具有 render prop 的组件接受一个返回 React 元素的函数，并在组件内部通过调用此函数来实现自己的渲染逻辑。
+定义时在返回的组件中添加 props.render(this.state),可以传入 props 根据原本的 state 来进行动态渲染。
+
+#### PropTypes
+
+类型检查
+`import PropTypes from 'prop-types'`
+Greeting.propTypes = {
+name: PropTypes.string
+};
+
+默认的 prop 值
+`Greeting.defaultProps = { name: 'Stranger' }`
+
+函数组件需要单独配置`HelloWorldComponent.propTypes = { name: PropTypes.string } `
+
+#### Context
+
+意为"上下文"
+在一个典型的 React 应用中，数据是通过 props 属性自上而下（由父及子）进行传递的，但此种用法对于某些类型的属性而言是极其繁琐的（例如：地区偏好，UI 主题），这些属性是应用程序中许多组件都需要的。Context 提供了一种在组件之间共享此类值的方式，而不必显式地通过组件树的逐层传递 props。
+
+用于共享对于组件树而言式全局的数据
+ex：登录状态，页面主题
+`const ThemeContext = React.createContext('light')`
+
+## Hook 篇
+
+Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。
+
+_HOOK 是向下兼容的_
+
+什么是 Hook，hook 是一些能在函数组件中钩入 React *state 以及生命周期等特性*的函数，也可以自定义 hook，复用不同组件之间的状态逻辑。
+
+1. state hook
+   `import from 'react' useState()`
+   `const [data,setData]=setState()`
+   返回一个当前状态和一个更新状态的函数
+2. effect Hook
+   数据获取、订阅或者手动修改过 DOM。我们统一把这些操作称为“副作用”，或者简称为“作用”。
+   useEffect 就是一个 Effect Hook，给函数增加操作副作用的能力。
+   React 会在每次渲染后调用副作用函数 —— 包括第一次渲染的时候。
+
+#### Hook 使用规则
+
+1. 只能在函数最外层调用 Hook，不要在循环、条件判断或者子函数中调用。
+2. 只能在 react 函数组件中调用 hook，不得在其他 js 函数中调用
+
+#### 自定义 hook
+
+在组件之间重用状态逻辑，解决方案有 HOC，render props
+自定义 hook 可以在不增加组件的情况下达到同样的目的
+
+```import React, { useState, useEffect } from 'react';
+
+function useFriendStatus(friendID) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline);
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+    };
+  });
+
+  return isOnline;
+}
+```
+
+```function FriendStatus(props) {
+  //自定义hook返回isOnlie的状态
+  const isOnline = useFriendStatus(props.friend.id);
+
+  if (isOnline === null) {
+    return 'Loading...';
+  }
+  return isOnline ? 'Online' : 'Offline';
+}
+```
+
+自定义 hook 是一种复用状态逻辑的方式，它不复用 state 本身，每次 hook 的调用都有一个完全独立的 state，因此可以在同一组件中多次调用同一个自定义 Hook。
+自定义 hook 一般命名为`useSomething`
+
+#### useContext
+
+让你不使用组件嵌套就可以订阅 React 的 Context。
+
+#### 使用 State Hook
+
+useState 是一种新方法，它与 class 里面的 this.state 提供的功能完全相同。
+
+- useState 需要哪些参数？ useState() 方法里面唯一的参数就是初始 state。
+- useState 方法的返回值是什么？ 返回值为：当前 state 以及更新 state 的函数。
+
+_当使用 useState 定义 state 变量的时候，返回的是一个有两个值的数组_
+
+#### 使用 Effect Hook
+
+##### 无需清除的 effect
+
+使用场景：在 React 更新 DOM 之后运行一些额外的代码
+ex：发送网络请求，手动变更 DOM，记录日志，这些都是常见的无需清除的操作。
+`function Example() { const [count, setCount] = useState(0); useEffect(() => { document.title = `You clicked ${count} times`; });}`
+
+##### 需要清除的 effect
+
+```
+import React, { useState, useEffect } from 'react';
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
+    }
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+
+  if (isOnline === null) {
+    return 'Loading...';
+  }
+  return isOnline ? 'Online' : 'Offline';
+}
+```
+
+- _为什么要在 effect 中返回一个函数？_ 这是 effect 可选的**清除机制**。每个 effect 都可以返回一个清除函数。如此可以将添加和移除订阅的逻辑放在一起。它们都属于 effect 的一部分。
+- React 何时清除 effect？ React 会在组件卸载的时候执行清除操作。正如之前学到的，effect 在每次渲染的时候都会执行。这就是为什么 React 会在执行当前 effect 之前对上一个 effect 进行清除。
+  _useEffect 的第一个参数为一个箭头函数，这个箭头函数会在挂载和状态更新的时候执行；箭头函数可以再返回一个箭头函数，这个返回的箭头函数会在状态更新和卸载组件的时候更新；_
+
+##### 使用多个 Effect 实现关注点分离
+
+可以把相关逻辑分到不同的 effect 内，实现关注点分离。effect 函数将会按顺序执行。
+
+##### effect 性能优化
+
+因为每次更新的时候都要运行 Effect，可能会导致潜在的性能问题，可以**跳过 Effect**进行性能优化`` useEffect(() => { document.title = `You clicked ${count} times`; }, [count]); // 仅在 count 更改时更新 ``
