@@ -1,31 +1,8 @@
-// interface Person {
-//   firstName: string;
-//   lastName: string;
-// }
-
-// function greeter(person: Person) {
-//   return "Hello," + person.firstName + "" + person.lastName;
-// }
-
-// let user = { firstName: "Spike", lastName: "Lee" };
-// document.body.innerHTML = greeter(user);
-
-class Student {
-  fullName: string;
-  constructor(
-    public firstName: string,
-    public middleInitial: string,
-    public lastName: string
-  ) {
-    this.fullName = firstName + "" + middleInitial + "" + lastName;
-  }
+console.log("hello ts");
+function add(n1: number, n2: number) {
+  return n1 + n2;
 }
-interface Person {
-  firstName: string;
-  lastName: string;
-}
-function greeter(person: Person) {
-  return "Hello" + person.firstName + "" + person.lastName;
-}
-let user = new Student("JANE", "Mi", "userlast");
-document.body.innerHTML = greeter(user);
+const nu1 = 1;
+const nu2 = "2";
+let res = add(nu1, nu2);
+console.log(res);
