@@ -61,4 +61,38 @@ function combine(input1:number | string, input2:number | string){
 }
 ```
 
-5. 文本类型
+5. 字面量类型 Literal
+
+如果结合联合类型，就显得有用多了。举个例子，当函数只能传入一些固定的字符串时：
+
+```
+function printText(s: string, alignment: "left" | "right" | "center") {
+  // ...
+}
+printText("Hello, world", "left");
+
+
+```
+
+6. 自定义类型
+
+使用情景：多次联合类型复用
+
+`type Combine= number|string`
+`let input1:Combine`
+
+7. void 无类型
+
+   不返回任何东西，不同于 null 以及 undefined
+   例如``console.log("hello")
+
+8. unknown
+
+类似 any，但是不能对 unknow 进行任何操作
+
+9. never
+
+   当进行收窄的时候，如果你把所有可能的类型都穷尽了，TypeScript 会使用一个 never 类型来表示一个不可能存在的状态。
+
+
+#### 编译
