@@ -404,3 +404,109 @@ Express 应用可以使用 Node 支持的所有数据库（Express 本身并没�
 Express 不对文件结构和组件的选用做任何约定。路由、视图、静态文件，以及其它应用具体逻辑均可按任意文件结构保存在任意数量的文件中。当然可以让整个 Express 应用保存在单一文件中，但是一般情况下，把应用按功能（比如账户管理、博客、论坛）和架构问题域（比如 MVC 架构 中的模型、视图、控制器）进行拆分是有意义的。
 
 ## Express 开发环境
+
+#### 开发环境包括
+
+1. Node
+2. npm
+3. Express
+4. IDE
+5. Git
+
+_过程中会创建 web 服务器_
+
+#### 版本选择
+
+- Express 选择最新版本
+- Node LTS 版
+
+#### 初始化项目
+
+1. 创建文件目录
+   `mkdir myapp`
+   `cd myapp`
+2. 使用 NPM 的 init 命令为应用创建一个 package.json 文件。这个命令将请求一系列的信息，包括应用的名称和版本，程序初始进入点的文件名（默认为 index.js）。
+   `npm init`
+3. 安装 Express
+   `npm install express`
+4. 可以调用 `require()` 函数来使用库(commen js)
+
+```
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+});
+
+app.listen(8000, () => {
+  console.log('示例程序正在监听 8000 端口！')
+});
+```
+
+5. node + 文件名启动服务器
+   `node index.js`
+6. 访问 URL `http://127.0.0.1:8000/`(8000 为上文定义的端口)
+
+#### 开发依赖
+
+`npm install eslint --save-dev`
+如果一个依赖只在开发过程中用到，应该将其保存为“开发依赖”`--save-dev`,生产环境中不会安装
+
+安装后的`package.json`
+
+```
+"devDependencies": {
+"eslint": "^5.12.0"
+}
+```
+
+#### 运行任务
+
+`npm run script`
+
+定义 script
+
+```
+"scripts": {
+  ...
+  //eslint 在src/js 目录下
+  "lint": "eslint src/js"
+  ...
+}
+```
+
+#### 安装 Express 应用生成器
+
+Express 应用生成器 工具可以生成一个 Express 应用的“框架”。可以用 NPM 这样安装它（-g 参数可以把该工具全局安装，那样就可以在任意应用中使用了）(脚手架)
+
+`npm install express-generator -g`
+
+##### 创建 express app
+
+进入应用目录，运行以下命令，即可创建一个名为 "helloworld" 的 Express 应用：
+
+`$ express --help`
+
+接下来
+
+`npm install`
+
+终端运行
+
+`> SET DEBUG=helloworld:* & npm start`(windows)
+
+打开网站,app 已经运行
+
+## 创建一个本地图书馆网站
+
+- 使用 Express 应用生成器创建一个应用骨架。
+- 启动和停止 Node web 服务器。
+- 使用数据库存放应用数据。
+- 创建路由来处理不同信息的请求，创建模板（"视图"）来渲染 HTML 数据以在浏览器中显示。
+- 使用表单。
+- 部署应用到生产环境。
+
+code:https://github.com/mdn/express-locallibrary-tutorial
+
+## 创建站点框架
