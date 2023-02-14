@@ -124,11 +124,9 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 - 文件包含
 - 命令行注入
 
-# Express Web Framework (Node.js/JavaScript)
+# Node
 
 ## 入门
-
-#### Node
 
 一个开源的、跨平台的运行时环境，有了它，开发人员可以使用 JavaScript 创建各种服务器端工具和应用程序
 
@@ -139,7 +137,190 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 - 可移植
 - 活跃的第三方生态系统和开发者社区
 
-#### web 框架
+#### 一个最简单的 Node 应用
+
+1. 引入 require 模块(CommonJS)
+2. 创建服务器
+3. npm(集成在 node 中)
+
+#### REPL 环境
+
+`$ node`
+功能
+
+1. 简单运算
+2. 使用变量
+3. 多行表达式
+4. 下划线变量
+
+#### Node.js 回调函数
+
+非阻塞实现方式:回调方式执行
+`fs.readFile('input.txt', function (err, data) {
+    if (err) return console.error(err);
+    console.log(data.toString())
+})`
+优点:不必等待程序逐行执行,大大提高运行效率
+
+#### 事件循环/EventEmitter
+
+#### 事件触发器
+
+`var fs = require("fs")`
+
+`var data = fs.readFileSync('input.txt')`
+
+`// 引入 events 模块
+var events = require('events');
+// 创建 eventEmitter 对象
+var eventEmitter = new events.EventEmitter()`
+
+- 绑定事件`event.on('some_event', function() { 
+    console.log('some_event 事件触发'); 
+}); `
+- 触发事件`setTimeoutfunction() { 
+    event.emit('some_event'); 
+}, 1000)`
+  event.emit()用于绑定事件
+  event.on()用于触发事件
+  另外还有 once,removelistener,addeventlistener(与 on 功能完全一致)
+
+#### Buffer
+
+缓存,用于存储二进制数据
+
+- 创建`Buffer.alloc(size[, fill[, encoding]])//返回一个指定大小的 Buffer 实例，如果没有设置 fill，则默认填满 0`,`Buffer.from(array)`
+- 读取 buf.toString(编码格式,起始序号)
+
+特点:存储在堆栈之外,不在 node 进程中,存储的是二进制数据
+
+#### Stream
+
+Stream 是一个抽象接口，Node 中有很多对象实现了这个接口。例如，对 http 服务器发起请求的 request 对象就是一个 Stream
+
+#### 模块系统
+
+`var hello = require('./hello')`
+`require会优先查找自带的模块`
+
+#### 函数
+
+可以把函数本身作为参数进行传递
+
+##### http 服务器的函数
+
+`var http = require("http");
+
+```
+http.createServer(function(request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.write("Hello World");
+  response.end();
+}).listen(8888)
+```
+
+```
+var http = require("http");
+
+function onRequest(request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.write("Hello World");
+  response.end();
+}
+
+http.createServer(onRequest).listen(8888)
+```
+
+#### 路由
+
+首先解析 url,通过 url.parse 进行解析 ,在服务器中进行操作
+
+#### 全局对象
+
+在浏览器 JavaScript 中，通常 window 是全局对象， 而 Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性
+
+#### 常用工具
+
+`util`使用 express 也可以
+
+#### node 文件系统
+
+node 提供一组类 unix 的标准的 api
+`var fs = require("fs")`
+
+##### 异步和同步
+
+Node.js 文件系统（fs 模块）模块中的方法均有异步和同步版本，例如读取文件内容的函数有异步的 `fs.readFile()` 和同步的 `fs.readFileSync()`
+
+##### 打开文件
+
+`fs.open(path, flags[, mode], callback)`
+
+##### 获取文件信息
+
+```
+var fs = require('fs')
+
+fs.stat('/Users/liuht/code/itbilu/demo/fs.js', function (err, stats) {
+console.log(stats.isFile()); //true
+})
+
+```
+
+fs.stat(path)执行后，会将 stats 类的实例返回给其回调函数。可以通过 stats 类中的提供方法判断文件的相关属性
+
+##### 写入文件
+
+`fs.writeFile(file, data[, options], callback)`
+
+##### 读取文件
+
+`fs.read(fd, buffer, offset, length, position, callback)`
+fd - 通过 fs.open() 方法返回的文件描述符。
+
+- buffer - 数据写入的缓冲区。
+- offset - 缓冲区写入的写入偏移量。
+- length - 要从文件中读取的字节数。
+- position - 文件读取的起始位置，如果
+- position 的值为 null，则会从当前文件指针的位置读取。
+- allback - 回调函数，有三个参数 err, bytesRead, buffer，err 为错误信息， bytesRead 表示读取的字节数，buffer 为缓冲区对象。
+
+##### 关闭文件
+
+`fs.close(fd, callback)`
+
+##### 截取文件
+
+`fs.ftruncate(fd, len, callback)`
+
+##### 删除文件
+
+`fs.unlink(path, callback)`
+
+##### 创建目录
+
+`fs.mkdir(path[, options], callback)`
+
+##### 删除目录
+
+`fs.rmdir(path, callback)`
+
+##### GET/POST
+
+```
+var http = require('http');
+var url = require('url');
+var util = require('util');
+
+http.createServer(function(req, res){
+    res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+    res.end(util.inspect(url.parse(req.url, true)));
+}).listen(3000);
+```
+
+# Express Web Framework (Node.js/JavaScript)
+
+## web 框架
 
 Node 本身并不支持其它常见的 web 开发任务。如果需要进行一些具体的处理，比如运行其它 HTTP 动词（比如 GET、POST、DELETE 等）、分别处理不同 URL 路径的请求（“路由”）、托管静态文件，或用模板来动态创建响应，那么可能就要自己编写代码了，亦或使用 web 框架，以避免重新发明轮子。
 
@@ -214,10 +395,12 @@ Node.js 依靠异步代码来保持快速，因此拥有可靠的回调模式至
 真的……就是这样。容易，对吧？显然也有一些重要的最佳实践，但在我们深入研究这些之前，让我们用基本方法组合一个现实生活中的例子 fs.readFile()：
 
 ```
+
 fs.readFile('/foo.txt', function(err, data) {
 // TODO: Error Handling Still Needed!
 console.log(data);
 });
+
 ```
 
 fs.readFile()获取要读取的文件路径，并在完成后调用回调。如果一切顺利，文件内容将在 data 参数中返回。但是如果出现问题（文件不存在，权限被拒绝等），第一个 err 参数将填充一个包含有关问题信息的错误对象。
@@ -225,6 +408,7 @@ fs.readFile()获取要读取的文件路径，并在完成后调用回调。如�
 正确处理此错误取决于您（回调创建者）。如果您希望整个应用程序关闭，您可以抛出。或者，如果您正处于某个异步流程的中间，您可以将该错误传播到下一个回调。选择取决于情况和期望的行为。
 
 ```
+
 fs.readFile('/foo.txt', function(err, data) {
 // If an error occurred, handle it (throw, propagate, etc)
 if(err) {
@@ -234,6 +418,7 @@ return;
 // Otherwise, log the file contents
 console.log(data);
 });
+
 ```
 
 #### 创建路由处理器
@@ -259,55 +444,57 @@ _可以有多个回调，但是需要 next()将参数提供给下个回调_
    字符`?、+、\*`和()是它们对应的正则表达式的子集。连字符 ( -) 和点 ( .) 由基于字符串的路径逐字解释。
 
 ```
+
 此路由路径将匹配对根路由的请求，/.
 
 app.get('/', function (req, res) {
-  res.send('root')
+res.send('root')
 })
 此路由路径将匹配请求到/about.
 
 app.get('/about', function (req, res) {
-  res.send('about')
+res.send('about')
 })
 此路由路径将匹配请求到/random.text.
 
 app.get('/random.text', function (req, res) {
-  res.send('random.text')
+res.send('random.text')
 })
 以下是一些基于字符串模式的路由路径示例。
 
-此路由路径将匹配acd和abcd。
+此路由路径将匹配 acd 和 abcd。
 
 app.get('/ab?cd', function (req, res) {
-  res.send('ab?cd')
+res.send('ab?cd')
 })
-此路由路径将匹配abcd、abbcd、abbbcd等。
+此路由路径将匹配 abcd、abbcd、abbbcd 等。
 
 app.get('/ab+cd', function (req, res) {
-  res.send('ab+cd')
+res.send('ab+cd')
 })
-此路由路径将匹配abcd, abxcd, abRANDOMcd, ab123cd, 等等。
+此路由路径将匹配 abcd, abxcd, abRANDOMcd, ab123cd, 等等。
 
 app.get('/ab*cd', function (req, res) {
-  res.send('ab*cd')
+res.send('ab*cd')
 })
-此路由路径将匹配/abe和/abcde。
+此路由路径将匹配/abe 和/abcde。
 
 app.get('/ab(cd)?e', function (req, res) {
-  res.send('ab(cd)?e')
+res.send('ab(cd)?e')
 })
 基于正则表达式的路由路径示例：
 
 此路由路径将匹配其中带有“a”的任何内容。
 
 app.get(/a/, function (req, res) {
-  res.send('/a/')
+res.send('/a/')
 })
-此路由路径将匹配butterflyand dragonfly，但不匹配butterflyman, dragonflyman, 等等。
+此路由路径将匹配 butterflyand dragonfly，但不匹配 butterflyman, dragonflyman, 等等。
 
 app.get(/.*fly$/, function (req, res) {
-  res.send('/.*fly$/')
+res.send('/.*fly$/')
 })
+
 ```
 
 #### 路由参数
@@ -331,6 +518,7 @@ checkout(), copy(), delete(), get(), head(), lock(), merge(), mkactivity(), mkco
 有一个特殊的路由方法 app.all()，它可以在响应任意 HTTP 方法时调用。用于在特定路径上为所有请求方法加载中间件函数
 
 ```
+
 // wiki.js - 维基路由模块
 
 const express = require('express');
@@ -338,15 +526,16 @@ const router = express.Router();
 
 // 首页路由
 router.get('/', (req, res) => {
-  res.send('维基首页');
+res.send('维基首页');
 });
 
 // “关于”页面路由
 router.get('/about', (req, res) => {
-  res.send('关于此维基');
+res.send('关于此维基');
 });
 
 module.exports = router;
+
 ```
 
 router 可以把 app 的路由集中存储，app.use(path,router)进行使用
@@ -432,16 +621,18 @@ _过程中会创建 web 服务器_
 4. 可以调用 `require()` 函数来使用库(commen js)
 
 ```
+
 const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+res.send('Hello World!')
 });
 
 app.listen(8000, () => {
-  console.log('示例程序正在监听 8000 端口！')
+console.log('示例程序正在监听 8000 端口！')
 });
+
 ```
 
 5. node + 文件名启动服务器
@@ -456,9 +647,11 @@ app.listen(8000, () => {
 安装后的`package.json`
 
 ```
+
 "devDependencies": {
 "eslint": "^5.12.0"
 }
+
 ```
 
 #### 运行任务
@@ -468,12 +661,14 @@ app.listen(8000, () => {
 定义 script
 
 ```
+
 "scripts": {
-  ...
-  //eslint 在src/js 目录下
-  "lint": "eslint src/js"
-  ...
+...
+//eslint 在 src/js 目录下
+"lint": "eslint src/js"
+...
 }
+
 ```
 
 #### 安装 Express 应用生成器
@@ -537,10 +732,12 @@ nodemon 是最简便的自动化工具之一
 配置 package.json
 
 ```
-  "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www"
-  },
+
+"scripts": {
+"start": "node ./bin/www",
+"devstart": "nodemon ./bin/www"
+},
+
 ```
 
 `devstart`可以启动 app
@@ -583,4 +780,23 @@ app.js 会设置并返回 express 应用对象
    });
    ```
 
+````
+
+```
+
+```
+
 #### 使用数据库(Mongoose)
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+````
