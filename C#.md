@@ -1,4 +1,4 @@
-# C# 基础
+# C# 入门
 
 ## 环境
 
@@ -447,7 +447,7 @@ switch(mainPlayer){
 4. 内容确定数组长度
    `变量类型[] 数组名 = new 变量类型[]{内容}`
 5. 内容确定数组长度,省略[]
-   变量类型[] 数组名 = {内容 1,内容 2....}
+   `变量类型[] 数组名 = {内容 1,内容 2....}`
 
 #### 数组的使用
 
@@ -621,3 +621,245 @@ static int[] Cal(int a, int b){
 - 前提是使用者知道规则
 - 返回值可以用表达式
 - return 可以不执行之后的代码,直接返回函数外部
+
+## ref out
+
+作为函数参数的修饰符
+
+如果我们想要通过函数改变一个值类型变量的值，这样写是没有办法改变的。因为我们知道值类型在进行值传递时，是在栈空间中重新开辟了空间，将内容拷贝到新空间。
+
+ref 可以改变参数的值
+
+#### out
+
+ref 传入的变量必须初始化,out 不用
+out 传入的变量必须在内部赋值,ref 不用
+
+#### 总结
+
+ref 传入时函数收到的时一个地址,并附带一个值,进行修改时直接修改地址,如果不加 ref 函数会仅仅收到一个数值
+
+- 作用:解决值类型和引用类型在函数内部改值或者重新声明,能够影响外部传进来的变量,使其也能被修改
+- 使用: 参数前家 ref/out
+- 区别:ref 传入时必须初始化,可改可不改,out 不用初始化,但是必须要修改
+
+## 变长参数
+
+ex:怎样求 n 个整数和
+
+```
+//加入关键字params后可以传入n个参数
+static int Sum(params int[] arr){
+   int  sum =0;
+   for (int i =0;i<arr.length;i++){
+      sum +=arr[i];
+   }
+   return sum
+}
+```
+
+1. params int[] 意味着可以传入 n 个同类型参数,传入的参数可以传入 arr 数组中
+2. params 关键字后必为数组!!!
+3. 函数参数中最多只能出现一个 params 关键字 ,并最后一组参数前可以有 n 个参数
+
+```
+static void E (string name,int a,int b, params string[] things){
+
+}
+```
+
+## 参数默认值
+
+`static void Speak2(string a,string t="123",string="hello")`
+支持多参数默认值
+如果混用,可选参数必须写在普通参数后
+作用:一般用来处理不同参数的同一类型的逻辑处理
+
+## 函数重载
+
+概念:同一个语句块中,函数名相同,函数参数类型,个数,顺序不同的函数
+调用时 程序会根据传入的参数判断哪一个需要重载
+
+```
+static int CalcSum(int a,int b){
+   return a + b;
+
+}
+
+static int CalcSum(int a,int b,int c){
+   return a + b + c;
+
+}
+
+
+```
+
+ref 和 out 可以理解成一一种变量类型,但是不能同时使用
+
+## 递归函数
+
+函数自己调用自己就叫递归函数
+必须能够自己停止,否则会 stackoverflow!!!
+
+```
+static void Fun(int a){
+Console.WriteLine();
+if(a>10){
+   return
+}
+a++;
+}
+```
+
+结束循环可以用条件语句`return`一个常量
+
+## 结构体
+
+```
+struct 自定义结构名(Pascal){
+   第一部分
+   变量
+
+   第二部分
+   构造函数(可选)
+
+   第三部分
+   函数
+}
+
+```
+
+例如
+
+```
+struct Student{
+   int age,
+   bool sex,
+   int number,
+
+}
+```
+
+#### 变量
+
+结构体声明的变量不能初始化,只能在外面初始化
+可以写任意类型的结构体
+不能够写自己的结构体
+
+#### 函数
+
+```
+
+struct Student{
+int age,
+bool sex,
+int number,
+void Speak{
+age++;
+}
+}
+
+```
+
+表现数据结构的行为
+在结构体中的方法不需要 static 关键字
+函数中可以直接使用结构体的变量
+
+#### 如何使用
+
+默认为`privite`模式,变量只能在结构体内部函数使用,而 `public`可以让变量可以在外部使用
+
+#### 结构体的构造函数
+
+没有返回值的函数
+函数名必须和结构体同名
+必须有参数!!!
+声明了构造函数,那么必须初始化
+
+```
+
+struct Student{
+int age,
+bool sex,
+int number,
+
+void Count{
+age++;
+}
+
+}
+
+```
+
+#### 总结
+
+struct 是函数和变量的集合,表示特点的数据集合
+访问修饰符:public 和 private
+构造函数:没有返回值,函数名和结构名相同,帮助快速初始化对象
+
+注意:
+
+1. 结构体声明的变量不能初始化,只能在外部或者函数中初始化
+2. 在结构体声明的函数不用家 static
+
+## 冒泡排序
+
+排序: 升序 AtoZ,降序 ZtoA
+![Alt text](f:/%E5%9B%BE%E7%89%87/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202023-03-06%20162445.png)
+
+#### 排序方法
+
+遍历项目,如果第 n 个数比 n+1 个数要大,则交换位置
+
+```
+for (int m = 0;m<arr.Length;m++){
+   for(int n=0;n<arr.Length-1;n++){
+      if(arr[n]>arr[n+1]){
+       int temp = arr[n];
+       arr[n] = arr[n+1];
+       arr[n+1] =temp;
+      }
+   }
+}
+```
+
+#### 优化方法
+
+1. 确定极限值之后,极值不参与比较
+
+```
+for (int m = 0;m<arr.Length - 1 - n;m++){
+   for(int n=0;n<arr.Length-1;n++){
+      if(arr[n]>arr[n+1]){
+       int temp = arr[n];
+       arr[n] = arr[n+1];
+       arr[n+1] =temp;
+      }
+   }
+}
+```
+
+2. 添加排序标志
+
+```
+for (int m = 0;m<arr.Length - 1 - n;m++){
+   bool isShort= false;
+   for(int n=0;n<arr.Length-1;n++){
+      isShort = true;
+
+      if(arr[n]>arr[n+1]){
+        int temp = arr[n];
+        arr[n] = arr[n+1];
+        arr[n+1] =temp;
+      }
+   }
+   if(!isShort){
+      break;
+   }
+}
+```
+
+#### 总结
+
+两两相邻,不停比较,不停交换,比较 m 轮
+套路写法,两层循环,外层轮数,内层比较,两值比较,满足交换
