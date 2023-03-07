@@ -469,12 +469,15 @@ switch(mainPlayer){
 5. 增加数组的元素
    `int[] array2 = new int[6];`
    数组初始化后不可以添加元素,但是可以进行搬家操作,把原数组放到新的数组中
+
    ```
    for(int i=0;i <array.length;i++){
      array2[i] = array[i];
    }
    ```
+
    把原数组放到新的数组中，来增加数组项
+
 6. 删除数组的元素
    原理与增加相同，但是长度变为新`array.length`
 7. 查找数组中的元素
@@ -842,9 +845,9 @@ for (int m = 0;m<arr.Length - 1 - n;m++){
 2. 添加排序标志
 
 ```
-for (int m = 0;m<arr.Length - 1 - n;m++){
+for (int m = 0;m<arr.Length;m++){
    bool isShort= false;
-   for(int n=0;n<arr.Length-1;n++){
+   for(int n=0;n<arr.Length-1-m;n++){
       isShort = true;
 
       if(arr[n]>arr[n+1]){
@@ -863,3 +866,153 @@ for (int m = 0;m<arr.Length - 1 - n;m++){
 
 两两相邻,不停比较,不停交换,比较 m 轮
 套路写法,两层循环,外层轮数,内层比较,两值比较,满足交换
+
+## 选择排序
+
+新建一个中间变量
+
+遍历找到极值,把极值放在最初或者最末的位置
+
+每一轮开始,默认 第一个为极值
+
+```
+int index=0;
+for(int n =1;n<arr.Length;n++){
+   if(arr[index]<arr[n]){
+     index=n;
+   }
+}
+
+```
+
+放入目标位置
+
+```
+length - 1 轮数
+if(index != arr.Length - 1 - 轮数){
+  int temp = arr[index];
+  arr[index]= arr[arr.Length - 1 - 轮数];
+  arr[arr.Length - 1 - 轮数] = temp;
+}
+
+```
+
+#### 总结
+
+```
+for(int m=0;m<arr.Length;m++){
+int index=0;
+for(int n =1;n<arr.Length;n++){
+   if(arr[index]<arr[n]){
+     index=n;
+   }
+   //用来排除上一轮已经放好的数
+   if(index != arr.Length - 1 - m){
+      int temp = arr[index];
+      arr[index]= arr[arr.Length -1-m];
+      arr[arr.Length - 1- m] = temp
+   }
+
+  }
+}
+
+
+```
+
+# C#核心
+
+切忌浮躁!!
+
+## 面向对象基本概念
+
+面向过程:分析出解决问题所需步骤,用函数一步步实现
+
+面向对象:对现实世界理解和抽象的编程方法,把更高的数据和方法组织为一个整体看待,从更高的层次进行程序开发,更贴近事物自然的运行模式
+
+_万物皆对象_
+
+#### 如何学习
+
+`class`关键词
+
+三大特性
+封装+继承+多态
+
+## 类 Class
+
+#### 什么是类
+
+具有相同特征
+具有相同行为
+一类事物的抽象
+类是对象的模板
+可以通过类创建对象
+
+#### 声明语法
+
+```
+class 类名{
+   特征--成员变量
+   行为--成员方法
+   保护特征--成员属性
+
+   构造函数和解析函数
+   索引器
+   运算符重载
+   静态成员
+}
+
+```
+
+#### 类声明实例
+
+```
+//Pascal
+//同一语句块不同类不得重名
+class Person{
+
+}
+class Machine{
+
+}
+
+```
+
+#### 类对象
+
+- 类的申明 和类对象申明是两个概念
+- 类似于枚举和结构体的申明,类相当于声明了一个自定义变量类型
+- 对象是类创建出来
+- 相当于申明一个指定类的变量
+- 类对象创建一般称为实例化对象
+- 类对象都是引用类型
+
+#### 实例化对象基本语法
+
+`类名 变量名`
+`类名 变量名 = null;
+(null)代表空`
+`类名 变量名 = new 类名()`
+
+#### 实例化的对象
+
+```
+Person p;
+//代表空,不分配内存(stack)空间
+Person p2= null;
+相当于一个人对象;
+Person p3= new Person();
+相当于又是一个人对象
+Person p4= new Person();
+
+两个实例之间没有关系
+```
+
+#### 总结
+
+类和类对象声明是两个概念
+类的声明式声明对象的模板,用来抽象形容事物
+类对象的声明是来表示现实中的个体的
+
+类--一个自定义变量类型
+实例化类对象是在声明变量
