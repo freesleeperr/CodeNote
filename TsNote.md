@@ -6,22 +6,22 @@
 
 ## 1.基础类型
 
-#### 布尔 Boolean
+### 布尔 Boolean
 
 true/false
 
-#### 数字 Number
+### 数字 Number
 
 和 JavaScript 一样，TypeScript 里的所有数字都是浮点数。
 支持：二进制和八进制十进制和十六进制
 
-#### 字符串 String
+### 字符串 String
 
 和 JavaScript 一样，可以使用双引号（"）或单引号（'）表示字符串。
 
 同 JS 模板字符串可用
 
-#### 数组 Array
+### 数组 Array
 
 1. 可以在元素类型后面接上[]，表示由此类型元素组成的一个数组
    `let list: number[] = [1, 2, 3]`
@@ -29,7 +29,7 @@ true/false
    `Array<元素类型>`
    `let list: Array<number> = [1, 2, 3]`
 
-#### 元组 Tuple
+### 元组 Tuple
 
 元组表山一个已知元素和类型数量的数组，各数组类型不必相同
 ex：
@@ -41,7 +41,7 @@ ex：
 
 当访问一个越界的元素，会使用联合类型替代
 
-#### 枚举 enum
+### 枚举 enum
 
 `enum` 类型是对 JavaScript 标准数据类型的一个补充。
 
@@ -57,20 +57,20 @@ ex：
 `let colorName:string=color[2]`
 colorName='Green'
 
-#### 任意值 Any
+### 任意值 Any
 
 `let notSure: any = 4`
 notSure 可以赋任意类型的值
 
-##### 与`let notSure: object`的区别，
+#### 与`let notSure: object`的区别，
 
 定义为 object 无法使用其身上的方法
 
-##### 如果知道一部分的数据类型
+#### 如果知道一部分的数据类型
 
 `let list: any[] = [1, true, "free"]; list[1] = 100`
 
-#### 空值 Void
+### 空值 Void
 
 ```
 function warnUser(): void {
@@ -83,16 +83,16 @@ function warnUser(): void {
 `void `类型的值只能赋值为 undefined 和 null
 `let unusable: void = undefined`
 
-#### Null&Undefined
+### Null&Undefined
 
 _默认情况下 null 和 undefined 是所有类型的子类型。_
 可以赋给任意类型的变量
 
-##### --strictNullChecks
+#### --strictNullChecks
 
 null 和 undefined 只能赋值给 void 和它们各自
 
-#### Never
+### Never
 
 **never 类型表示的是那些永不存在的值的类型。**
 ex：总是会抛出异常的函数的返回值类型
@@ -120,7 +120,7 @@ function infiniteLoop(): never {
 
 _啥都不是但是又存在的类型_
 
-#### 类型断言
+### 类型断言
 
 直接告诉编译器数据的类型
 
@@ -143,7 +143,7 @@ let strLength: number = (someValue as string).length
 
 jsx/react 中，只允许 as 语法
 
-#### 关于 let
+### 关于 let
 
 代替 var
 
@@ -153,7 +153,7 @@ jsx/react 中，只允许 as 语法
 
 ## 接口( interface)
 
-#### 介绍
+### 介绍
 
 ts 核心原则，对所有值进行结构检查。
 
@@ -162,7 +162,7 @@ ts 中，接口的作用:为这些类型命名或为代码第三方定义契约�
 **定义对象的形状（shape)**
 类型检查器不会去检查属性的顺序，只要存在想应的属性是对的就可以。
 
-#### 可选属性
+### 可选属性
 
 _定义接口时，可以不存在的属性_
 如果不希望对象完全匹配类型对象的形状，那么可以用可选属性。
@@ -195,7 +195,7 @@ let mySquare = createSquare({color: "black"});
 
 但是仍然不允许添加未定义的属性
 
-#### 任意属性
+### 任意属性
 
 在接口属性中添加`[propName:string]：any`
 
@@ -222,7 +222,7 @@ let tom: Person = {
   ，那么确定属性和可选属性必须时该类型的子集。（可选属性 age 的类型不能为 number）
 - 一个接口
 
-#### 只读属性
+### 只读属性
 
 `readonly`
 
@@ -245,4 +245,5 @@ let tom: Person = {
 //修改会报错
 tom.id = 9527;
 ```
+
 注意，只读的约束存在于第一次给对象赋值的时候，而不是第一次给只读属性赋值的时候.

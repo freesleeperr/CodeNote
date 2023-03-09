@@ -73,7 +73,7 @@ class Board extends React.Component {
 
 3. SPA 页面，不切换 HTML 来显示内容
 
-#### react 设计哲学
+### react 设计哲学
 
 1. 分解组件
    单一责任
@@ -88,7 +88,7 @@ class Board extends React.Component {
 
 1. npx npm 附带的 package 运行工具
 
-#### why JSX?
+### why JSX?
 
 React 认为渲染逻辑本质上与其他 UI 逻辑内在耦合。
 
@@ -129,7 +129,7 @@ const element = React.createElement(
 )
 ```
 
-#### 组件&props
+### 组件&props
 
 react 中的组件类似于 JS 中的函数
 接受任意的 props（参数），返回描述页面展示内容的 react 元素。
@@ -144,7 +144,7 @@ react 中的组件类似于 JS 中的函数
 
 _组件名称必须以大写开头_
 
-#### 把组件组合起来
+### 把组件组合起来
 
 ````function Welcome(props){ return <h1>Hello,{props.name}</h1> }
 
@@ -169,7 +169,7 @@ return ( <div>
 ## doc review
 ````
 
-##### 在 HTML 中使用 react
+#### 在 HTML 中使用 react
 
 1. 在 DOM 中定义根组件 root(document.getElementById('root')
 2. 定义组件，如果需要参数，则需要 props
@@ -178,7 +178,7 @@ return ( <div>
 
 _在组件嵌套时注意，子组件的在父组件中的属性相当于参数，在子组件本身中作为 props 的方法出现，使得每个组件能够独立存在。_
 
-#### Props 具有只读性
+### Props 具有只读性
 
 组件中，不得把 props 传入后，再修改 props。
 需要变化的部分，放到组件的 state
@@ -210,7 +210,7 @@ function tick(){
 }
 ```
 
-##### 关于 react 的两个 root API
+#### 关于 react 的两个 root API
 
 1. reactDOM.render()创建一个传统模式的根组件(将要被弃用)
 2. reactDOM.createRoot('使用 document.getElementById 选择根组件的 DOM ') 创建一个 root 组件，支持所有 react18 的新特性
@@ -218,7 +218,7 @@ function tick(){
 在 React 中，"root" 是一个指向顶层数据结构的*指针*，React 用它来跟踪要渲染的树。
 在 Legacy Root API 中，root 对用户来说是不透明的，因为我们将它附加到 DOM 元素上，通过 DOM 节点访问它，并没有将其暴露给用户。
 
-##### state 的确定标准
+#### state 的确定标准
 
 state 的判断依据
 
@@ -229,7 +229,7 @@ state 的判断依据
 
 state 是一个组件中配置的对象，ex：this.state={number：19}
 
-##### function 组件转换为 class
+#### function 组件转换为 class
 
 1. 创建一个同名的 ES6 class
 2. 添加一个空的 render()
@@ -280,7 +280,7 @@ clockTimer(){
 
 _this.props,this.state 是 react 自身设置的，如果数据不参与数据流，可以直接存在组件内的 this 对象上_
 
-##### 关于在 html 上直接引入 React 和使用 JSX
+#### 关于在 html 上直接引入 React 和使用 JSX
 
 1. 在 HTML`<body/>`标签上方引入 react 和 reactDOM
 2. 引入 babel，对 JSX 进行实时编译，不推荐，会导致网页加载变慢
@@ -288,7 +288,7 @@ _this.props,this.state 是 react 自身设置的，如果数据不参与数据�
 
 _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 app 中 return 其他子组件`</component>`_
 
-##### 组件调用顺序
+#### 组件调用顺序
 
 1. 组件初始化
    root.render()时，调用构造函数，初始化 state
@@ -296,14 +296,14 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
 3. 在 DOM 更新后，执行生命周期的 ComponentDidMount()
 4. 若有函数调用 setState(),会重新调用 render()渲染页面
 
-##### 关于正确使用 state
+#### 关于正确使用 state
 
 1. 不要直接修改 State，构造函数是唯一可以给 state 赋值的地方，在其他地方改变 state，需要使用 setState
 2. state 的更新可能是异步的
    `setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是同步的。 setState的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 setState(partialState, callback) 中的callback拿到更新后的结果。 setState 的批量更新优化也是建立在“异步”（合成事件、钩子函数）之上的，在原生事件和setTimeout 中不会批量更新，在“异步”中如果对同一个值进行多次 setState ， setState 的批量更新策略会对其进行覆盖，取最后一次的执行，如果是同时 setState 多个不同的值，在更新时会对其进行合并批量更新。`
 3. 总之，setState 在原生事件中（addeventlistener,setTimeout）是同步的，但是在钩子函数和和成函数中是异步的。
 
-##### React 的数据流
+#### React 的数据流
 
 数据永远是自上而下流的，如同瀑布。
 
@@ -326,7 +326,7 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
 
 通常，事件处理函数为 class 中的方法
 
-##### JSX 中使用回调函数的 this 的方法
+#### JSX 中使用回调函数的 this 的方法
 
 在 react 的 class 组件中，方法函数中的 this 默认不会绑定 this
 严格模式：输出为 undefind
@@ -342,7 +342,7 @@ _根组件只有一个，一般为'root',root 中包含 `<app/>` 组件，在 ap
 3. _在回调中使用箭头函数_
    `return ( <button onClick={() => this.handleClick()}> Click me </button> );`
 
-##### 向事件处理程序传参
+#### 向事件处理程序传参
 
 `<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button> <button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>`
 
@@ -377,14 +377,14 @@ const listItems = numbers.map((number) =>
 );
 ```
 
-##### 列表中的 key
+#### 列表中的 key
 
 key 帮助 React 识别哪些元素改变了，比如被添加或删除。因此你应当给数组中的每一个元素赋予一个确定的标识。
 
 通常使用数据中的 id 来作为 key，当没有 id 属性时，**万不得已**使用 index 来作为 key。
 原因：操作数据，如添加或删除项会导致 index 改变，与 react 的 diff 冲突，导致渲染错误。完全静态页面则可以忽略。
 
-##### key 提取组件
+#### key 提取组件
 
 **元素的 key 只有放在就近的数组上下文中才有意义。**
 例如：在 map 函数中指定 key，而在单独定义`<li>`时不需要指定。
@@ -401,7 +401,7 @@ JSX 可以直接嵌套 map 来生成列表
 
 ## 表单
 
-##### 受控组件
+#### 受控组件
 
 `在 HTML 中，表单元素（如<input>、 <textarea> 和 <select>）通常自己维护 state，并根据用户输入进行更新。而在 React 中，可变状态（mutable state）通常保存在组件的 state 属性中，并且只能通过使用 setState()来更新。`
 
@@ -440,7 +440,7 @@ JSX 可以直接嵌套 map 来生成列表
 
 _数据在表单 change 后更新 state，state 更新`<input>` value，达到用 state 来控制 input 目的_
 
-###### textarea
+##### textarea
 
 在 HTML 中, `<textarea>` 元素通过其子元素定义其文本
 
@@ -448,17 +448,17 @@ react 中可以使用 value 属性定义文本
 
 放在 state 的 value 在初始化的时候就能起作用，所以具有初值
 
-###### select
+##### select
 
 在 react 中，不会使用 select 属性来默认选中，而是采用`<select>`标签中的 **value** 属性,也可以把**数组**传入 value，从而实现多项选择
 `总的来说，这使得 <input type="text">, <textarea> 和 <select> 之类的标签都非常相似—它们都接受一个 value 属性，你可以使用它来实现受控组件。`
 
-###### input type="file"
+##### input type="file"
 
 通过`<input type="file">`来选择存储设备中的一个或多个文件，可以使用 js 的`file api`来控制。
 *因为 value 只读，所以为一个非受控组件*没法把 state 与 value 绑定。
 
-###### 受控组件的输入
+##### 受控组件的输入
 
 在受控组件上指定 value 的 prop 会阻止用户更改输入。如果你指定了 value，但输入仍可编辑，则可能是你意外地将 value 设置为 undefined 或 null。
 
@@ -479,7 +479,7 @@ react 中可以使用 value 属性定义文本
 
 3. 子使用 props.setState 来改变父组件状态，再通过 props 同步父组件 state（类似于受控组件，但是 state 不在同一组件内）
 
-###### 总结
+##### 总结
 
 _应该依赖自上而下的数据流，而不是尝试同步每个 state_
 
@@ -493,7 +493,7 @@ _应该依赖自上而下的数据流，而不是尝试同步每个 state_
 
 ## 组合 vs 继承
 
-#### 包含关系
+### 包含关系
 
 有些组件的子组件需要父组件指定
 
@@ -513,7 +513,7 @@ recommend:用一个特殊的`children`prop 来把子组件传递到渲染结果�
 
 _在 react 中，`<componet>`就是一个对象，所以可以作为 props 传给任何子组件_
 
-#### 特例关系
+### 特例关系
 
 可以用这种预留 props 的方式来制作自定义组件
 
@@ -543,7 +543,7 @@ return (
 
 _组合同样适用于 class_
 
-#### 继承
+### 继承
 
 ''在 Facebook，我们在成百上千个组件中使用 React。我们并没有发现需要使用继承来构建组件层次的情况。''
 
@@ -562,7 +562,7 @@ Props 和组合为你提供了清晰而安全地定制组件外观和行为的�
 
 从设计稿开始：你现在拥有设计图，以及一个返回 JSON 的 API。
 
-#### 第一步：将设计好的 UI 划分为组件层级
+### 第一步：将设计好的 UI 划分为组件层级
 
 1. 切图
    把设计稿的 ui 划分层级，画框，区分不同的层次
@@ -580,7 +580,7 @@ Props 和组合为你提供了清晰而安全地定制组件外观和行为的�
 
 * 设计稿中被其他组件包含的子组件，在层级上应该作为其子节点 。\*
 
-#### 第二步： 创建一个静态版本
+### 第二步： 创建一个静态版本
 
 最容易的方式，是先用已有的数据模型渲染一个不包含交互功能的 UI。最好将渲染 UI 和添加交互这两个过程分开。
 在构建应用的静态版本时，需要创建一些可以服用的组件。
@@ -598,7 +598,7 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
 
 最顶层 APP 组件中接收数据模型，把 props 传给最顶层的自定义组件。通过单项数据流，把源数据向下传递给子组件。
 
-#### 第三步：确定最小的 UI state
+### 第三步：确定最小的 UI state
 
 目的：实现交互功能需要有 state 的数据模型
 原则：DRY-don't repect yourself,只保留应用所需的**最小**可变 state，其他数据均由计算产生。
@@ -609,7 +609,7 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
 - 该数据是否随时间的推移而保持不变？如果是，那它应该也不是 state。
 - 你能否根据其他 state 或 props 计算出该数据的值？如果是，那它也不是 state。
 
-#### 第四步：确定 state 的位置
+### 第四步：确定 state 的位置
 
 （参见状态提升）
 对于应用中的每一个 state：
@@ -619,7 +619,7 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
   该共同所有者组件或者比它层级更高的组件应该拥有该 state。
 - 如果你找不到一个合适的位置来存放该 state，就可以直接创建一个新的组件来存放该 state，并将这一新组件置于高于共同所有者组件层级的位置。
 
-#### 第五步：添加反向数据流
+### 第五步：添加反向数据流
 
 反向数据流即子组件通过父组件传入的 handler 或者 setState 函数来改变父组件中的 state（props 不能够被改变）
 
@@ -627,7 +627,7 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
 
 - function 组件中：由于使用 useState hook，直接把对应的 setState 穿给子组件就可以（推荐）
 
-#### THATS ALL
+### THATS ALL
 
 核心概念篇，end
 
@@ -641,7 +641,7 @@ _构建静态版本时，不要使用 state，state 代表了随时间变化的�
 
 ## Ref
 
-#### 什么是 ref
+### 什么是 ref
 
 在典型的 React 数据流中，props 是父组件与子组件交互的唯一方式
 
@@ -656,18 +656,18 @@ ref 属性表示 react 对组件真正实例的引用，其实就是 ReactDOM.re
 
 或者使用回调来设置 ref
 
-#### ref 转发
+### ref 转发
 
 如果父组件要获取子组件的 DOM，需要进行 ref 转发
 `React.forwardRef((props,ref)=>(render所返回的组件))`
 返回的组件接收一个`ref`属性，`ref.current`可以调用子组件上的方法，直接操作 DOM。
 
-#### render props
+### render props
 
 具有 render prop 的组件接受一个返回 React 元素的函数，并在组件内部通过调用此函数来实现自己的渲染逻辑。
 定义时在返回的组件中添加 props.render(this.state),可以传入 props 根据原本的 state 来进行动态渲染。
 
-#### PropTypes
+### PropTypes
 
 类型检查
 `import PropTypes from 'prop-types'`
@@ -680,7 +680,7 @@ name: PropTypes.string
 
 函数组件需要单独配置`HelloWorldComponent.propTypes = { name: PropTypes.string } `
 
-#### Context
+### Context
 
 意为"上下文"
 在一个典型的 React 应用中，数据是通过 props 属性自上而下（由父及子）进行传递的，但此种用法对于某些类型的属性而言是极其繁琐的（例如：地区偏好，UI 主题），这些属性是应用程序中许多组件都需要的。Context 提供了一种在组件之间共享此类值的方式，而不必显式地通过组件树的逐层传递 props。
@@ -706,12 +706,12 @@ _HOOK 是向下兼容的_
    useEffect 就是一个 Effect Hook，给函数增加操作副作用的能力。
    React 会在每次渲染后调用副作用函数 —— 包括第一次渲染的时候。
 
-#### Hook 使用规则
+### Hook 使用规则
 
 1. 只能在函数最外层调用 Hook，不要在循环、条件判断或者子函数中调用。
 2. 只能在 react 函数组件中调用 hook，不得在其他 js 函数中调用
 
-#### 自定义 hook
+### 自定义 hook
 
 在组件之间重用状态逻辑，解决方案有 HOC，render props
 自定义 hook 可以在不增加组件的情况下达到同样的目的
@@ -750,11 +750,11 @@ function useFriendStatus(friendID) {
 自定义 hook 是一种复用状态逻辑的方式，它不复用 state 本身，每次 hook 的调用都有一个完全独立的 state，因此可以在同一组件中多次调用同一个自定义 Hook。
 自定义 hook 一般命名为`useSomething`
 
-#### useContext
+### useContext
 
 让你不使用组件嵌套就可以订阅 React 的 Context。
 
-#### 使用 State Hook
+### 使用 State Hook
 
 useState 是一种新方法，它与 class 里面的 this.state 提供的功能完全相同。
 
@@ -763,15 +763,15 @@ useState 是一种新方法，它与 class 里面的 this.state 提供的功能�
 
 _当使用 useState 定义 state 变量的时候，返回的是一个有两个值的数组_
 
-#### 使用 Effect Hook
+### 使用 Effect Hook
 
-##### 无需清除的 effect
+#### 无需清除的 effect
 
 使用场景：在 React 更新 DOM 之后运行一些额外的代码
 ex：发送网络请求，手动变更 DOM，记录日志，这些都是常见的无需清除的操作。
 `function Example() { const [count, setCount] = useState(0); useEffect(() => { document.title = `You clicked ${count} times`; });}`
 
-##### 需要清除的 effect
+#### 需要清除的 effect
 
 ```
 import React, { useState, useEffect } from 'react';
@@ -801,11 +801,11 @@ function FriendStatus(props) {
 - React 何时清除 effect？ React 会在组件卸载的时候执行清除操作。正如之前学到的，effect 在每次渲染的时候都会执行。这就是为什么 React 会在执行当前 effect 之前对上一个 effect 进行清除。
   _useEffect 的第一个参数为一个箭头函数，这个箭头函数会在挂载和状态更新的时候执行；箭头函数可以再返回一个箭头函数，这个返回的箭头函数会在状态更新和卸载组件的时候更新；_
 
-##### 使用多个 Effect 实现关注点分离
+#### 使用多个 Effect 实现关注点分离
 
 可以把相关逻辑分到不同的 effect 内，实现关注点分离。effect 函数将会按顺序执行。
 
-##### effect 性能优化
+#### effect 性能优化
 
 因为每次更新的时候都要运行 Effect，可能会导致潜在的性能问题，可以**跳过 Effect**进行性能优化`` useEffect(() => { document.title = `You clicked ${count} times`; }, [count]); // 仅在 count 更改时更新 ``
 
@@ -824,7 +824,7 @@ function FriendStatus(props) {
 _一个全局能够使用的数据_
 或者 _局部的全局作用域_
 
-#### 使用场景
+### 使用场景
 
 共享在组件树中全局使用的数据
 使得数据不需要层层传递就能够让底层组件接收。
@@ -868,9 +868,9 @@ class ThemedButton extends React.Component {
 
 另一种解决方案，把组件作为 props 传递下去。
 
-#### context 的 API
+### context 的 API
 
-##### React.createContext
+#### React.createContext
 
 ```
 const MyContext = React.creatContext(defaultValue);
@@ -879,6 +879,6 @@ const MyContext = React.creatContext(defaultValue);
 - 创建一个 Context 对象。当 React 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 Provider 中读取到当前的 context 值。
 - 只有当组件所处的树中没有匹配到 Provider 时，其 defaultValue 参数才会生效。
 
-#### Context.Provider
+### Context.Provider
 
 `<MyContext.Provider value="{}">`

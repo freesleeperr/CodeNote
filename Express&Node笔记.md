@@ -2,12 +2,12 @@
 
 ## 服务端编程介绍
 
-#### 静态网站和动态网站
+### 静态网站和动态网站
 
 静态网站是指无论何时当一个特定资源被请求的时候都返回相同的被硬编码的内容![Alt text](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Introduction/basic_static_app_server.png)
 动态网站是指，一些响应内容只有在被需要的时候才会生发的网站。![Alt text](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Introduction/web_application_with_html_and_steps.png)
 
-#### 服务器端的优势
+### 服务器端的优势
 
 1. 信息的高效传输和存储
    服务器端编程则允许我们在数据库中存储信息，并且允许我们动态地创建和返回 HTML 和其他类型的文件（比如，PDF 文件和图片等）。我们也可以简单地传输数据（JSON、XML 等），来让合适的客户端框架呈现（这样就减少了服务器的处理压力和需要被传输的数据总量）。
@@ -20,7 +20,7 @@
 
 ## 用户端介绍
 
-#### 网络服务器和 HTTP
+### 网络服务器和 HTTP
 
 浏览器通过 HTTP 与服务端进行交流
 
@@ -44,11 +44,11 @@
 - CONNECT
 - PANTCH
 
-##### url 参数含义
+#### url 参数含义
 
 GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给服务器的 URL 中的数据——比如，http://mysite.com?name=Fred&age=11，你经常会用到问号（？）来将 URL 剩余的部分和 URL 参数分隔开来，一个赋值符号（=）将名称和与之相关的值分隔开来，然后一个“&”符号分割不同的键值对。当他们被用户改变然后提交时，URL 参数具有与生俱来地“不安全性”。因此，一个 URL 参数或者 GET 请求是不会用来在服务器上更新数据的。
 
-##### 服务器的响应
+#### 服务器的响应
 
 网络服务器等待来自客户的请求信息，当请求到达时处理它们，然后发给浏览器 HTTP 响应消息。
 
@@ -56,23 +56,23 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 - 404 not found
 - 403 forbidden
 
-##### GET
+#### GET
 
 回应 200
 
-##### POST
+#### POST
 
 与 GET 最大区别：最主要的不同在于 URL 不再包含任何参数
 
 回应 302 found
 
-##### 静态网站
+#### 静态网站
 
 只能处理 GET 请求，因为服务器不会存储任何可修改的数据，也不会根据 HTTP 请求数据
 
 在有大量数据时非常低效
 
-##### 动态网站
+#### 动态网站
 
 动态站点可以根据特定的请求 URL 和数据生成和返回内容 (而不是总是返回同一个 URL 的硬编码文件)。
 
@@ -82,17 +82,17 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 
 服务器端框架 (亦称 "web 应用框架") 使编写、维护和扩展 web 应用更加容易。
 
-#### 直接处理 HTTP 请求和响应
+### 直接处理 HTTP 请求和响应
 
 网络框架可以生成和处理 HTTP 请求，通过编写代码的方式。
 
-#### 将请求路由到相关的 handler 中
+### 将请求路由到相关的 handler 中
 
-#### 使从请求中获得数据变得简单
+### 使从请求中获得数据变得简单
 
-#### 抽象和简化数据库接口
+### 抽象和简化数据库接口
 
-#### 如何选择 web 框架
+### 如何选择 web 框架
 
 1. 学习代价
 2. 效率
@@ -108,15 +108,15 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 
 ## 网络安全
 
-#### 站点安全威胁
+### 站点安全威胁
 
-#### XSS 跨站脚本攻击
+### XSS 跨站脚本攻击
 
-#### SQL 注入
+### SQL 注入
 
-#### CSRF 跨站请求伪造
+### CSRF 跨站请求伪造
 
-#### 其他威胁
+### 其他威胁
 
 - 劫持
 - 拒绝服务
@@ -137,13 +137,13 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 - 可移植
 - 活跃的第三方生态系统和开发者社区
 
-#### 一个最简单的 Node 应用
+### 一个最简单的 Node 应用
 
 1. 引入 require 模块(CommonJS)
 2. 创建服务器
 3. npm(集成在 node 中)
 
-#### REPL 环境
+### REPL 环境
 
 `$ node`
 功能
@@ -153,7 +153,7 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 3. 多行表达式
 4. 下划线变量
 
-#### Node.js 回调函数
+### Node.js 回调函数
 
 非阻塞实现方式:回调方式执行
 `fs.readFile('input.txt', function (err, data) {
@@ -162,9 +162,9 @@ GET 请求通过在 URL 末尾增加的键值对，来编码包含在发送给�
 })`
 优点:不必等待程序逐行执行,大大提高运行效率
 
-#### 事件循环/EventEmitter
+### 事件循环/EventEmitter
 
-#### 事件触发器
+### 事件触发器
 
 `var fs = require("fs")`
 
@@ -185,7 +185,7 @@ var eventEmitter = new events.EventEmitter()`
   event.on()用于触发事件
   另外还有 once,removelistener,addeventlistener(与 on 功能完全一致)
 
-#### Buffer
+### Buffer
 
 缓存,用于存储二进制数据
 
@@ -194,20 +194,20 @@ var eventEmitter = new events.EventEmitter()`
 
 特点:存储在堆栈之外,不在 node 进程中,存储的是二进制数据
 
-#### Stream
+### Stream
 
 Stream 是一个抽象接口，Node 中有很多对象实现了这个接口。例如，对 http 服务器发起请求的 request 对象就是一个 Stream
 
-#### 模块系统
+### 模块系统
 
 `var hello = require('./hello')`
 `require会优先查找自带的模块`
 
-#### 函数
+### 函数
 
 可以把函数本身作为参数进行传递
 
-##### http 服务器的函数
+#### http 服务器的函数
 
 `var http = require("http");
 
@@ -231,32 +231,32 @@ function onRequest(request, response) {
 http.createServer(onRequest).listen(8888)
 ```
 
-#### 路由
+### 路由
 
 首先解析 url,通过 url.parse 进行解析 ,在服务器中进行操作
 
-#### 全局对象
+### 全局对象
 
 在浏览器 JavaScript 中，通常 window 是全局对象， 而 Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性
 
-#### 常用工具
+### 常用工具
 
 `util`使用 express 也可以
 
-#### node 文件系统
+### node 文件系统
 
 node 提供一组类 unix 的标准的 api
 `var fs = require("fs")`
 
-##### 异步和同步
+#### 异步和同步
 
 Node.js 文件系统（fs 模块）模块中的方法均有异步和同步版本，例如读取文件内容的函数有异步的 `fs.readFile()` 和同步的 `fs.readFileSync()`
 
-##### 打开文件
+#### 打开文件
 
 `fs.open(path, flags[, mode], callback)`
 
-##### 获取文件信息
+#### 获取文件信息
 
 ```
 var fs = require('fs')
@@ -269,11 +269,11 @@ console.log(stats.isFile()); //true
 
 fs.stat(path)执行后，会将 stats 类的实例返回给其回调函数。可以通过 stats 类中的提供方法判断文件的相关属性
 
-##### 写入文件
+#### 写入文件
 
 `fs.writeFile(file, data[, options], callback)`
 
-##### 读取文件
+#### 读取文件
 
 `fs.read(fd, buffer, offset, length, position, callback)`
 fd - 通过 fs.open() 方法返回的文件描述符。
@@ -285,27 +285,27 @@ fd - 通过 fs.open() 方法返回的文件描述符。
 - position 的值为 null，则会从当前文件指针的位置读取。
 - allback - 回调函数，有三个参数 err, bytesRead, buffer，err 为错误信息， bytesRead 表示读取的字节数，buffer 为缓冲区对象。
 
-##### 关闭文件
+#### 关闭文件
 
 `fs.close(fd, callback)`
 
-##### 截取文件
+#### 截取文件
 
 `fs.ftruncate(fd, len, callback)`
 
-##### 删除文件
+#### 删除文件
 
 `fs.unlink(path, callback)`
 
-##### 创建目录
+#### 创建目录
 
 `fs.mkdir(path[, options], callback)`
 
-##### 删除目录
+#### 删除目录
 
 `fs.rmdir(path, callback)`
 
-##### GET/POST
+#### GET/POST
 
 ```
 var http = require('http');
@@ -324,7 +324,7 @@ http.createServer(function(req, res){
 
 Node 本身并不支持其它常见的 web 开发任务。如果需要进行一些具体的处理，比如运行其它 HTTP 动词（比如 GET、POST、DELETE 等）、分别处理不同 URL 路径的请求（“路由”）、托管静态文件，或用模板来动态创建响应，那么可能就要自己编写代码了，亦或使用 web 框架，以避免重新发明轮子。
 
-#### Express 简介
+### Express 简介
 
 Express 是最流行的 Node 框架，是许多其它流行 Node 框架 的底层库。它提供了以下机制：
 
@@ -333,18 +333,18 @@ Express 是最流行的 Node 框架，是许多其它流行 Node 框架 的底�
 - 设置常见 web 应用设置，比如用于连接的端口，以及渲染响应模板的位置。
 - 在请求处理管道的任何位置添加额外的请求处理“中间件”
 
-#### 包容
+### 包容
 
 Express 是高度包容的。几乎可以将任何兼容的中间件以任意顺序插入到请求处理链中。
 可以用单一文件或多个文件构造应用，怎样的目录结构都可以。
 
-#### Express 代码
+### Express 代码
 
 - Express 可以调用特定 HTTP 动词（GET, POST, SET 等）函数和 URL 模式（“路由”）函数，还可以指定模板（“视图”）引擎的种类、模板文件的位置以及渲染响应所使用的模板。
 - 可以使用 Express 中间件来添加对 cookie、会话、用户、获取 POST/GET 参数，等。
 - 可以使用 Node 支持的任何类型数据库（Express 本身没有定义任何数据库行为）
 
-#### hello world
+### hello world
 
 使用 node 运行 `node $`
 `const express = require('express');
@@ -355,7 +355,7 @@ node 需要 commen js 语法
 
 `app.get()`路由定义
 
-#### 创建和导入模块
+### 创建和导入模块
 
 引入模块`const express = require('express')`
 require()
@@ -369,11 +369,11 @@ require()
 }`
 `exports.area()`=`module.export.area()`
 
-#### 使用异步 API
+### 使用异步 API
 
 Node 中使用单线程
 
-##### Node 中的异步原则 错误优先
+#### Node 中的异步原则 错误优先
 
 在 node 中编写函数时，函数的第一个参数为`err`,在发生错误时返回
 `FCS 关于帖子会谈
@@ -421,7 +421,7 @@ console.log(data);
 
 ```
 
-#### 创建路由处理器
+### 创建路由处理器
 
 1. 路由的基本结构
    `app.METHOD(PATH, HANDLER)`
@@ -497,14 +497,14 @@ res.send('/.*fly$/')
 
 ```
 
-#### 路由参数
+### 路由参数
 
 由参数是命名的 URL 段，用于捕获在 URL 中它们的位置指定的值。捕获的值填充到 req.params 对象中，路径中指定的路由参数的名称作为它们各自的键。
 `app.get("/users/:userId/:bookId", function (req, res) {
   res.send(req.params);
 });`
 
-#### Router 路由处理器
+### Router 路由处理器
 
 `app.all('/secret', (req, res, next) => {
   console.log('访问私有文件 ...');
@@ -540,7 +540,7 @@ module.exports = router;
 
 router 可以把 app 的路由集中存储，app.use(path,router)进行使用
 
-#### 使用中间件 middleware
+### 使用中间件 middleware
 
 中间件（英语：Middleware），又译中间件、中介层，是一类提供系统软件和应用软件之间连接、便于软件各部件之间的沟通的软件，应用软件可以借助中间件在不同的技术架构之间共享信息与资源。中间件位于客户机服务器的操作系统之上，管理着计算资源和网络通信
 中间件和路由函数是按声明顺序调用的。一些中间件的引入顺序很重要（例如，如果会话中间件依赖于 cookie 中间件，则必须先添加 cookie 处理器）
@@ -551,7 +551,7 @@ router 可以把 app 的路由集中存储，app.use(path,router)进行使用
 
 使用 `app.use()` 或 `app.add()` 将一个中间件函数添加至处理链中
 
-#### 托管静态文件
+### 托管静态文件
 
 `express.static`中间件来托管静态文件
 
@@ -564,7 +564,7 @@ router 可以把 app 的路由集中存储，app.use(path,router)进行使用
 `app.use('/media', express.static('public'))`
 可以访问'/media/images..,/media/...'
 
-#### 错误处理
+### 错误处理
 
 通过中间件处理(next),有四个参数`(err, req, res, next)`
 `app.use((err, req, res, next) => {
@@ -576,11 +576,11 @@ router 可以把 app 的路由集中存储，app.use(path,router)进行使用
 
 _HTTP 404 和其它“错误”状态码不作为错误处理。可使用中间件来自行处理这些状态。_
 
-#### 使用数据库
+### 使用数据库
 
 Express 应用可以使用 Node 支持的所有数据库（Express 本身并没有定义任何数据库管理的附加行为或需求）。其中包括：PostgreSQL、MySQL、Redis、SQLite、MongoDB，等等。
 
-#### 渲染视图
+### 渲染视图
 
 动态渲染模板
 
@@ -588,13 +588,13 @@ Express 应用可以使用 Node 支持的所有数据库（Express 本身并没�
 
 在不使用框架的情况下动态更新 html
 
-#### 文件结构
+### 文件结构
 
 Express 不对文件结构和组件的选用做任何约定。路由、视图、静态文件，以及其它应用具体逻辑均可按任意文件结构保存在任意数量的文件中。当然可以让整个 Express 应用保存在单一文件中，但是一般情况下，把应用按功能（比如账户管理、博客、论坛）和架构问题域（比如 MVC 架构 中的模型、视图、控制器）进行拆分是有意义的。
 
 ## Express 开发环境
 
-#### 开发环境包括
+### 开发环境包括
 
 1. Node
 2. npm
@@ -604,12 +604,12 @@ Express 不对文件结构和组件的选用做任何约定。路由、视图、
 
 _过程中会创建 web 服务器_
 
-#### 版本选择
+### 版本选择
 
 - Express 选择最新版本
 - Node LTS 版
 
-#### 初始化项目
+### 初始化项目
 
 1. 创建文件目录
    `mkdir myapp`
@@ -639,7 +639,7 @@ console.log('示例程序正在监听 8000 端口！')
    `node index.js`
 6. 访问 URL `http://127.0.0.1:8000/`(8000 为上文定义的端口)
 
-#### 开发依赖
+### 开发依赖
 
 `npm install eslint --save-dev`
 如果一个依赖只在开发过程中用到，应该将其保存为“开发依赖”`--save-dev`,生产环境中不会安装
@@ -654,7 +654,7 @@ console.log('示例程序正在监听 8000 端口！')
 
 ```
 
-#### 运行任务
+### 运行任务
 
 `npm run script`
 
@@ -671,13 +671,13 @@ console.log('示例程序正在监听 8000 端口！')
 
 ```
 
-#### 安装 Express 应用生成器
+### 安装 Express 应用生成器
 
 Express 应用生成器 工具可以生成一个 Express 应用的“框架”。可以用 NPM 这样安装它（-g 参数可以把该工具全局安装，那样就可以在任意应用中使用了）(脚手架)
 
 `npm install express-generator -g`
 
-##### 创建 express app
+#### 创建 express app
 
 进入应用目录，运行以下命令，即可创建一个名为 "helloworld" 的 Express 应用：
 
@@ -715,13 +715,13 @@ code:https://github.com/mdn/express-locallibrary-tutorial
    `npm install`
    `DEBUG=express-locallibrary-tutorial:* npm start`或者`npm start`(不显示调试信息)
 
-#### 文件改动时重启服务器
+### 文件改动时重启服务器
 
 默认状态,重启服务器才能看到 Express 网站的改动
 
 可以安装模块来实现实时改动的功能
 
-##### nodemon
+#### nodemon
 
 nodemon 是最简便的自动化工具之一
 `sudo npm install -g nodemon`
@@ -742,7 +742,7 @@ nodemon 是最简便的自动化工具之一
 
 `devstart`可以启动 app
 
-#### 目录结构
+### 目录结构
 
 package.json 文件定义依赖项和其他信息，以及一个调用应用入口（/bin/www，一个 JavaScript 文件）的启动脚本，脚本中还设置了一些应用的错误处理，加载 app.js 来完成其余工作。/routes 目录中用不同模块保存应用路由。/views 目录保存模板。
 
@@ -786,7 +786,7 @@ app.js 会设置并返回 express 应用对象
 
 ```
 
-#### 使用数据库(Mongoose)
+### 使用数据库(Mongoose)
 
 ```
 
