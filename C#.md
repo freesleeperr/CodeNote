@@ -1472,3 +1472,385 @@ class Test{
 1. const 只能初始化不能修改,static 没有这个规则
 2. const 只能修饰变量,static 可以修饰变量,函数,class
 3. const 不能写在访问修饰符前,需要写在变量声明前,static 没有这个规则
+
+## 静态类和静态构造函数
+
+特点: 只能包含静态成员
+不能被实例化
+
+作用:
+
+1. 将常用的静态成员写在静态类中,方便使用
+2. 静态类不能实例化,更能体现工具类的唯一性
+   ex:Console
+
+```
+static class TestStatic{
+public static int testIndex = 0;
+public static void TestFun(){
+   get;
+   set;
+}
+}
+```
+
+### 静态构造函数
+
+,没法使用 3p 修饰符
+
+```
+static class TestStatic{
+public static int testIndex = 0;
+public static void TestFun(){
+   get;
+   set;
+}
+static StaticClass(){
+   Console.WriteLine()
+}
+}
+```
+
+第一次使用静态类或者静态变量,会自动执行静态构造函数
+
+在非静态类中也可以使用,同样也会在第一次使用类中内容时执行
+
+### 总结
+
+静态类
+用 static 修饰的类
+特点:
+只能包含静态成员
+不能实例化
+作用:
+工具类
+拓展方法
+
+静态构造函数:
+用 static 修饰的构造函数
+特点:静态类和普通类都有静态构造函数
+不能使用访问修饰符
+不能有参数
+只会自动调用一次
+作用:
+初始化静态成员
+
+## 拓展方法
+
+概念：
+为现有非静态变量类型添加新方法
+
+### 作用
+
+1. 提升程序拓展性
+2. 不需要在对象中重新写方法
+3. 不需要继承
+4. 为别人封装的类型写额外的方法
+
+### 特点
+
+1. 一定在静态类中
+2. 一定是静态函数
+3. 第一个参数为拓展目标
+4. 第一个参数用 this 修饰
+
+### 实例
+
+可以在任意的静态类中声明
+为 int 拓展系统方法
+
+```
+static class Tools{
+public static void SpeakValue(this int value){
+   Console.WriteLine("拓展方法")
+   int i =10；
+   }
+}
+```
+
+### 为非静态自定义类型添加方法
+
+```
+static class Tools{
+   public static void SpeakValue(this int value){
+   Console.WriteLine("拓展方法")
+   int i =10；
+   }
+   //
+   public static void Fun2(this Test t){
+      Console.WriteLine("为Test拓展的方法");
+   }
+}
+
+```
+
+注意：如果类成员方法充满，则添加的方法不会生效
+
+### 总结
+
+提升程序拓展性
+不需要在对象中重新写方法
+不需要继承添加方法，可以为别人封装的类型添加额外方法
+可以有返回值和 n 个参数
+
+## 运算符重载
+
+概念
+
+让自定义类和结构体能够使用运算符
+使用关键字 operator
+
+特点:
+
+1. 一定是公共静态方法
+2. 返回值写在 operator 前
+3. 逻辑处理自定义
+
+作用:
+
+让自定义和结构体可以进行运算
+
+注意
+
+1. 条件运算符需要成对出现
+2. 一个符号可以使用多个重载
+3. 不能使用 ref/out
+
+### 实例
+
+```
+class Point {
+   public int x:
+   public int y;
+   public static Point operator +(Point p1,Point p2){
+    Point p = new Point();
+    p.x = p1.x+p2.x;
+    p.y =p1.y++p2.y;
+    return p;
+   }
+}
+```
+
+### 运算符可重载和不可重载的
+
+1. 算数运算符
+   都可以进行重载
+   注意参数的数量
+2. 逻辑运算符
+   !只能重载逻辑非
+3. 位运算符
+   |,&,»,«,^,~取反,可以进行重载
+   注意参数数量
+4. 条件运算符
+   <>,>=,<=,必须成对重载
+5. 不可重载的运算符
+   逻辑或&&,逻辑与||,索引符[]
+   ,强转运算符(),特殊运算符,三目运算符?,:
+
+### 固定语法
+
+`public static 返回值 operator 运算符(参数列表)`
+作用:
+让子第定义类或结构体对象,进行运算
+注意:
+
+1. 参数的数量
+2. 条件运算符配对实现
+3. 一个符号,多个重载
+4. 不能使用 ref/out
+
+## 内部类
+
+概念:
+在一个类中再声明一个类
+特点:
+使用时要用包裹者点出自己
+作用:
+亲密关系的变现
+注意:
+访问修饰符作用很大
+
+```
+class Person{
+  public int age;
+  public string name;
+  public Body body;
+  public class Body{
+   Arm leftArm;
+   Arm rightArm;
+   class Arm{
+
+   }
+  }
+}
+```
+
+### 分布类
+
+把一个类分成几部分声明
+关键字:partial
+作用:
+分部描述一个类
+增加程序的拓展性
+注意:
+分布类可以写在多个脚本文件中
+分布类的访问修饰符要一致
+分布类中不能有重复成员
+
+```
+partial class Student{
+   public int number;
+   public void Speak(string str){
+
+   }
+}
+```
+
+## 继承
+
+### 概念
+
+一个类 a 继承类 b
+类 a 会继承类 b 的所有成员
+a 类将拥有 b 类所有特征和行为
+
+被继承的类,称为父类,基类,超类
+
+继承的类:子类,派生类
+子类可以有自己的特征和行为
+
+### 特点
+
+1. 单根性:子类只能有一个父类
+2. 传递性:子类可以间接继承父类的父类
+
+### 基本语法
+
+```
+class 类名: 被继承的类名{
+
+}
+```
+
+### 实例
+
+```
+class Teacher{
+ public string name;
+ public int number;
+ public void SpeakName(){
+   Console.WriteLine(name);
+ }
+}
+```
+
+```
+//继承Teacher类
+class TeachingTeacher : Teacher{
+   public string subject;
+   //添加特有的方法
+   public void SpeakSubject(){
+      Console.WriteLine(subject);
+   }
+}
+```
+
+可以通过继承父类获得父类的父类的特征和行为
+`private`会导致子类无法访问
+`protected`外部无法使用，但是子类可以使用
+
+### 子类和父类的同名成员
+
+可以在子类中使用与父类同名的元素，但是会覆盖父元素的元素
+`public new string name`
+
+不建议使用
+
+### 总结
+
+继承基本语法
+单根性，传递性，protect
+
+## 里氏替换原则
+
+任何父类出现的地方,子类都可以替代
+因为子类包括父类的所有内容
+方便进行对象存储和管理
+
+### 基本实现
+
+```
+//继承父类
+class Player:Gameobject{
+public void MonsterAtk(){
+   ...
+}
+
+}
+
+```
+
+`GameObject player = new Player()`
+
+### is /as
+
+基本概念
+is:判断一个对象是否为指定类对象
+返回值:bool 是为真,不是为假
+`类对象 is 类名`
+
+```
+
+//判断是否属于Player类
+if(player is Player){
+
+}
+```
+
+as:将一个对象转换为指定类对象
+返回值:指定类型对象
+成功返回指定类型对象,失败返回 null
+`类对象 as 类名`
+注意:转换的对象之间必须有继承关系
+
+## 继承中的构造函数
+
+### 概念
+
+当声明子类对象时,先执行父类,在执行子类的构造函数
+
+1. 父类的无参构造很重要
+2. 子类可以通过 base 关键字,代表父类,调用父类构造
+
+### 继承中构造函数的执行顺序
+
+从父类构造函数开始执行
+
+### 父类的构造函数很重要
+
+子类实例化,默认自动调用父类的无参构造,如果父类无参被顶掉会报错
+
+### 使用 base 调用指定父类构造
+
+```
+class Father{
+  public Father(int i){
+   Console.WriteLine("父类")
+  }
+
+}
+class Son:Father{
+   public Son(int i):base(i){
+
+   }
+}
+```
+
+不去指定 base 会默认使用无参构造函数
+
+特点:先执行父类的再执行子类的,从老祖宗开始,依次一代一代向下运行
+
+父类无参很重要,如果被顶掉,子类就无法使用默认无参构造函数
+
+如何解决:始终保持声明无参构造
+通过 base 来指定父类的构造
