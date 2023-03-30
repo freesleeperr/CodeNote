@@ -2279,9 +2279,9 @@ Console.WriteLine(char[1]);
 6. 替换指定字符
 
 ```
-str = "tt";
-//str为"ta"
-str = str.Replace("t","a");
+   str = "tt";
+   //str为"ta"
+   str = str.Replace("t","a");
 ```
 
 7. 大小写转换
@@ -2412,7 +2412,7 @@ ArrayList 是一个 C#封装好的类,本质为 object 类型数组,ArrayList �
 ### 增删改查
 
 增加:
-`array.Add(123456);`
+`array.Add("123456");`
 插入(位置,内容)
 `array.Insert(1,"123456")`
 
@@ -2455,7 +2455,7 @@ foreach(object item in array){
 ### 装箱拆箱
 
 ArrayList 是一个可以自动扩容的 object 数组,存在装箱拆箱,当在其中进行值类型存储是装箱,值类型取出是拆箱
-尽量少用,使用 Array<T>进行存储
+尽量少用,使用 List<T>进行存储
 
 ## stack
 
@@ -2665,4 +2665,494 @@ while(flag){
 定义类或方法时使用替代符代表变量类型
 当真正使用类或者方法时具体指定类型
 
-### 泛型分类
+### 泛型分类和语法
+
+泛型类和泛型接口
+`class 类名<泛型占位字母>`
+`interface 接口名<泛型占位字母>`
+
+泛型函数
+基本语法:`函数名<泛型占位字母>(参数列表)`
+注意:泛型占位字母可以有多个,用逗号分开
+
+### 泛型类和接口
+
+```
+class TestClass<T>{
+ public T value;
+}
+
+class Program{
+  static void Main(string[] args){
+   Console.WriteLine("T");
+   //类型参数化,定义t为参数,一旦声明则不能更改
+   TestClass<int> t = new TestClass<int>();
+  };
+};
+class TestClass2<T1,T2>{
+   public T1 value1;
+}
+interface Test3<T>{
+
+}
+```
+
+### 泛型方法
+
+1. 普通类中的泛型方法
+
+```
+
+class Test2{
+//有参
+public void TestFun<T>( T value){
+Console.WriteLine(value);
+}
+//无参
+public void TestFun<T>(){
+T t = default(T);
+}
+}
+//作为返回值
+public T TestFun<T>(string v){
+   return default(T);
+}
+
+```
+
+```
+Test2 tt = new Test2();
+//传入string类型
+tt.TestFun<string>();
+```
+
+2. 泛型类中泛型方法
+
+```
+class Test2<T>{
+   //T在声明时指定,不能动态变化
+public T value;
+//不是泛型函数,不能变化
+public void TestFun(T t){
+
+}
+//是泛型函数,类型作为参数
+public void TestFun<K>(K k){
+
+}
+}
+```
+
+### 泛型的作用
+
+不同类型用相同逻辑
+可以选择泛型
+使用泛型可以避免装箱拆箱
+
+```
+//优化ArrayList
+class ArrayList<T>{
+ public void Add(T value){
+
+ }
+ public void Remove(T value){
+
+ }
+}
+```
+
+## 泛型约束
+
+### 概念
+
+`where (泛型字母):约束类型 `
+泛型约束一共有六种
+
+1. 值类型 where 泛型字母:struct
+2. 引用类型 where 泛型字母:class
+3. 存在无参公共构造函数 where 泛型字母:new()
+4. 某个类本身或者其派生类 where 0 泛型字母:类名
+5. 某个接口的派生类型 where 泛型字母:接口名
+6. 另一个泛型类型本身或者派生类型 where 泛型字母:另一个泛型字母
+
+### 各类型约束讲解
+
+1. 值类型约束:
+
+```
+class Test<T> where T:struct{
+   public T value;
+   public void TestFun<K>(K v) where K:struct{
+
+   }
+}
+//只能选择值类型的类型,其他会报错
+Test<int> t1 = new Test1<int>();
+t1.TestFun<float>(3.14);
+```
+
+2. 引用类型约束:
+
+```
+class Test<T> where T:class{
+   public T value;
+   public void TestFun<K>(K v) where K:class{
+
+   }
+}
+//只能选择引用类型的类型,其他会报错
+Test<object> t1 = new Test1<object>();
+//必须传一个类,引用类型
+t1.TestFun<object>(3.14);
+```
+
+3. 无参公共构造函数
+
+```
+//要求必须有公共无参构造
+class Test3<T> where T:new(){
+  public T value;
+  public void TestFun(K k) where K : new(){
+
+  }
+}
+```
+
+```
+Test<Test> t3 = new Test3<Test1>();
+```
+
+4. 某个类本身或者派生类
+
+```
+//要求必须是 Test1 这个类或者是该类的派生
+class Test3<T> where T: Test{
+public T value;
+public void TestFun(K k) where K : new(){
+
+}
+}
+
+```
+
+5. 某个接口的派生类型
+
+```
+//要求T为接口,接口派生的类或者接口
+class Test5<T> where T : IFly{
+
+}
+```
+
+6. 另一各泛型约束
+
+```
+class Test6<T,U> where T : U{
+
+}
+```
+
+### 约束组合使用
+
+```
+//组合使用类,无参构造约束
+class test7<T> where T : class,new(){
+
+}
+//多个泛型有约束
+class Test8<T,K> where T:Class,new() where K:struct{
+
+}
+```
+
+## List
+
+本质是 C#类,是一个类型可变的泛型数组,帮助我们实现了很多方法,比如泛型数组增删改查
+
+### 声明
+
+`using System.Collections.Generic`
+
+```
+List<int> list = new List<int>();
+List<string> list2 = new List<string>;
+List<bool> list3 = new List<bool>();
+```
+
+### 增加
+
+增:
+
+```
+//类型只能添加指定的
+list.Add(1);
+List2.Add("123");
+//添加另一个list
+List<string> liststr = new List<string>();
+list2.AddRabge(listStr);
+```
+
+删:
+
+```
+//去除指定元素
+list.Remove();
+//移除指定位置的元素
+list.RemoveAt(0);
+//清空
+list.Clear();
+
+```
+
+查:
+
+```
+//查看指定位置元素
+Console.WriteLine(list[0]);
+//查看元素是否存在
+if(list.Contains(1)){
+   Console.WriteLine("1");
+}
+//正向查找元素位置,返回位置/-1
+int index = list.IndexOf(2);
+
+```
+
+改:
+
+```
+list[0] = 99;
+```
+
+### 遍历
+
+```
+//长度
+list.Count();
+//容量
+list.Capacity();
+//for
+foreach(int item in list){
+   Console.WriteLine(item);
+}
+```
+
+## Dictionary
+
+### 概念
+
+`Hashtable`可以理解为具有泛型的 Hashtable
+是基于键的哈希代码组织起来的键值对
+键值从`Hashtable`的 object 变为自己可以制定的泛型
+
+### 声明
+
+`using System.Collection.Generic`
+
+```
+//<键类型,值类型>
+Dictionary<int,string> dictionary = new Dictionary<int, string>();
+```
+
+### 增删查改
+
+增:
+
+```
+//键不能相同,值可以相同
+dictionary.Add(1,"123");
+```
+
+删:
+只能通过键来删除,如果不存在则没反应
+`dictionary.Remove(1)`
+
+```
+//清空
+dictionary.Clear();
+```
+
+查:
+
+```
+//通过键查询值,找不到报错,hashtable则会报错
+dictionary[2];
+//查看是否存在,根据键
+if(dictionary.ContainsKey(1){
+
+});
+//查看是否存在,根据值
+if(dictionary.ContainsValue("123"){
+
+});
+```
+
+改:
+`dictionary[1]=1234;`
+
+### 遍历
+
+```
+//遍历所有键
+foreach(int item in dictionary.Keys){
+
+}
+//遍历所有值
+foreach(int item in dictionary.Values){
+
+}
+//键值一起遍历
+foreach (Keyvalue<int,string> item in dictionary){
+
+}
+```
+
+## 顺序存储和链式存储
+
+### 数据结构
+
+数据结构是计算机存储,组织数据的方式(规则)
+数据结构是指相互之间讯在一种或者多种特定关系元素的集合
+比如自定义的一个类也成称为数据结构,自己定义的数据组合规则
+
+常用数据结构:数组,栈,队列,链表,树,图,堆,散列表
+顺序存储和链式存储时数据结构两种数据结构
+
+### 线性表
+
+线性表是一种数据结构,是由 n 个具有相同特性的数据元素的有限序列
+
+比如数组,ArrayList,Stack,Queue,链表
+
+### 顺序存储
+
+数组,Stack,Queue,List,ArrayList -- 顺序存储
+但是组织规则并不相同
+顺序存储:
+用一组地址连续的存储单眼一次存储线性表各个数组元素
+
+### 链式存储
+
+用链接方式把不同内存区域的空间链接起来
+
+单向链表,双向链表,循环链表 -- 链式存储
+链式存储(链接存储)
+用一组任意的存储单元存储线性表中各个数据元素
+
+#### 实现一个最简单的单向链表
+
+```
+class LinkedNote<T>{
+      public T value;
+      //存储下一个元素,相当于钩子
+      public LinkedNode<T> nextNode
+      public LinkedNode(T value){
+       this.value=value;
+      }
+}
+class LinkedList<T>{
+   //头节点
+   public LinkedNode<T> head;
+   public LinkedNode<T> last;
+   //封装add方法
+   public void Add(T value){
+     LinkedNode<T> node = new LinkedNote<T>(value);
+
+     if(head == null){
+      //定义链表头尾
+     head = node;
+     last = node;
+     }else{
+       head.nextNode = node;
+       last = node;
+     }
+   }
+   //封装Remove方法
+   public void Remove(T value){
+     if(head == null){
+        return;
+     }
+     if(head.value.Equals(value){
+      //如果头节点被移除变空,证明只有一个节点,尾部也要清空
+        head = head.nextNode;
+        if(head == null){
+            last = null;
+        }
+     })
+   }
+   LinkedNode<T> node = head;
+   while(node.next != null){
+       if(node.nextNode.value.Equal(value)){
+         node.nextNode = node.nextNode.nextNode;
+         break;
+       }
+   }
+}
+```
+
+### 对比
+
+增删:链表不需要移动位置,只需要改变下一元素的赋值,顺序存储需要移动位置
+查改:顺序存储可以通过下标直接获得,链式必须遍历
+
+## LinkedList
+
+### 概念
+
+本身是一个可变类型的双向链表
+
+### 申明
+
+引用命名空间`using System.Collections.Generic`
+
+```
+LinkedList<int> linkedList = new LinkedList<int>();
+LinkedList<string> linkedList2 = new LinkedList<string>();
+```
+
+链表对象,需要掌握两个类
+一个是链表本身,另一个是 LinkedListNode
+
+### 增删改查
+
+增
+
+```
+//头尾增加元素
+linkedList.AddLast(10);
+linkedList.AddFirst(20);
+
+```
+
+删
+
+```
+//移除头尾结点
+linkedList.RemoveFirst();
+linkedList.RemoveLast();
+```
+
+```
+//移除指定节点
+linkedList.Remove(20);
+//清空
+linkedList.Clear();
+```
+
+查:
+
+```
+//查询头尾节点
+LinkedListNode<int> first = linkedList.First;
+LinkedListNode<int> last = linkedList.Last;
+```
+
+找到指定值的节点
+无法直接通过下表获取中间元素
+只能遍历查找
+`node =x linkedList.Find(5);`
+插入节点
+向后插入:
+`linkedList AddAfter(n,11);`
+向前插入:
+`linkedList AddBefore(n,11);`

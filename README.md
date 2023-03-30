@@ -1,7 +1,9 @@
 # 笔记
-- js
-- ts
-- react
-- css
-- node/express
+
+- JavaScript
+- TypeScript
+- React
+- CSS
+- Node/Express
 - C#
+- Next.js
