@@ -3141,18 +3141,207 @@ linkedList.Clear();
 
 查:
 
+1. 查询头尾节点
+
 ```
-//查询头尾节点
 LinkedListNode<int> first = linkedList.First;
 LinkedListNode<int> last = linkedList.Last;
 ```
 
-找到指定值的节点
-无法直接通过下表获取中间元素
-只能遍历查找
-`node =x linkedList.Find(5);`
-插入节点
-向后插入:
-`linkedList AddAfter(n,11);`
-向前插入:
-`linkedList AddBefore(n,11);`
+2. 找到指定值的节点
+   无法直接通过下标获取中间元素
+   只能遍历查找
+
+```
+   //Find进行遍历查找
+   LinkedListNode<int> node =linkedList.Find(3);
+   node = linkedList.Find(5);
+   向后插入:
+   `linkedList AddAfter(n,11);`
+   向前插入:
+   `linkedList AddBefore(n,11);`
+```
+
+3. 判断是否存在
+
+```
+if( linkeList.Contain(1){
+Console.WriteLine("链表存在")；
+})
+```
+
+改：
+首先必须获得链表中的节点的位置，才能进行修改
+
+### 遍历
+
+1. forEach 直接遍历值
+
+```
+foreach(int item in linkedList){
+   Console.WriteLine(item);
+}
+```
+
+2. 通过节点遍历
+
+```
+//从头到尾
+LinkedListNode<int> nowHead = linkedList.First;
+   while(nowHead != null){
+   nowHead = nowHead.Next;
+}
+//从尾到头
+LinkedListNode<int> nowHead = linkedList.First;
+   while(nowHead != null){
+   nowHead = nowHead.Previous;
+}
+```
+
+## 泛型栈和队列
+
+`useing System.Collection.Generic`
+
+### 数据集合
+
+List,Dictionary,LinkedList, Statck,Quene
+
+### 泛型数据集合
+
+使用上与不带泛型的 Stack 和 Quene 一模一样
+
+## 委托
+
+委托是函数方法的容器
+
+可以理解未表示函数方法的变量类型
+用来存储,传递方法
+
+本质是一个类,定义函数/方法的类型(返回值和参数的类型),不同的函数(方法)必须对应各自"格式一致的委托
+
+### 语法
+
+`delegate`
+语法:访问修饰符 `delegate` 返回值 委托名(参数列表)
+
+写在`namespace`和`class`中
+
+更多的写在`namespace`中
+语法:函数声明前加一个 deletgate 关键字
+
+### 定义自定义委托
+
+访问修饰符默认不写，为 public，在其他命名空间也能使用
+private 其他命名空间不能用
+一般使用 public
+
+```
+//声明一个可以用来存储无参返回值函数的容器
+定义了规则，并没有使用
+delegate void MyFun();
+//委托规则的声明，不能重名
+//表示用来装载或者传递 返回值为int 有一个int参数的函数 委托 容器规则
+public delegate int MyFun2(int a);
+
+```
+
+### 使用定义好的委托
+
+委托是函数的容器
+
+常常用在：
+
+1. 作为类的成员
+2. 作为函数的参数
+
+```
+class Test{
+   public MyFun fun;
+   public MyFun fun;
+
+   public void  TestFun(MyFun fun,MyFun2 fun2 ){
+        //可以处理一些别的逻辑，当逻辑处理玩，在执行传入的函数
+        int i = 1;
+
+   }
+}
+```
+
+### 委托可以存储多个函数
+
+```
+//如何用委托存储多个函数
+MyFun ff = Fun;
+ff =+ Fun;
+ff();
+```
+
+```
+class Program{
+   static void Main(string[] args){
+   MyFun f =new MyFun(Fun);
+   }
+   static void Fun(){
+      Console.WriteLine('123123')
+   }
+   //简介调用invoke
+   f.Invoke()
+   MyFun f2 = Fun;
+   fun2(i);
+   this.fun = fun；
+   this.fun2 =fun2;
+}
+```
+
+### 委托增删改查
+
+增：
+
+```
+public void AddFun(MyFun fun,MyFun fun2){
+  this.fun +=fun;
+  this.fun2+=fun2;
+}
+```
+
+删：
+
+```
+public void RemoveFun(MyFun,MyFun2 fun2){
+this.fun -= fun;
+this.fun2-= fun2;
+//可以直接删除指定的函数
+//多减不会报错,但是不会处理
+}
+```
+
+改:
+
+```
+public void RemoveFun(MyFun,MyFun2 fun2){
+this.fun -= fun;
+this.fun2-= fun2;
+}
+```
+
+### 系统定义好的委托
+
+使用系统自带委托,需要引用`using System`
+
+```
+//无参无返回值的
+Action action = Fun();
+//泛型委托,同样是系统提供
+Func<string> funcString = Fun4;
+Func<int> funcInt = Fun5;
+//传n个参数的,最多16,无返回值
+Action<int,string> action = Fun();
+//传n个参数的,最多16,有返回值
+Func<int,int> fun2 = Fun2;
+```
+
+### 总结
+
+简单理解 委托就是装载传递函数的容器
+可以使用委托变量,来存储函数或者传递函数的
+系统已经提供了很多委托:Action:无返回值的委托 0~16,Func:有返回值的委托 0~16
