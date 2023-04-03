@@ -2272,10 +2272,12 @@ Console.WriteLine(char[1]);
    从末尾开始找,找到返回位置序号,没找到返回值-1
 5. 移除指定位置字符
    返回修改过的字符串
+
    ```
    //开始和结束的位置
    str = str.Remove(4,2)
    ```
+
 6. 替换指定字符
 
 ```
@@ -2285,17 +2287,20 @@ Console.WriteLine(char[1]);
 ```
 
 7. 大小写转换
+
    ```
    str= "sss";
    str.ToUpper();
    str = str.ToUpper();
    ```
+
 8. 字符串截取
    //截取 2
    `str = str.Substring(2)`
    //开始位置,指定个数
    `str = str.Substring(2,3)`
 9. 字符串切割
+
    ```
    str = "1,2,3,4,5,7,";
    //切割后返回一个数组
@@ -2475,7 +2480,7 @@ stack 是栈存储容器,是一种先进后出的数据结构
 只能一个一个进行存储
 删:栈没有删除,只有取
 获取栈顶的对象
-`object v = stack.Pop(); `
+`object v = stack.Pop();`
 查:
 无法查看指定位置的元素
 只能看栈顶的内容
@@ -2765,7 +2770,7 @@ class ArrayList<T>{
 
 ### 概念
 
-`where (泛型字母):约束类型 `
+`where (泛型字母):约束类型`
 泛型约束一共有六种
 
 1. 值类型 where 泛型字母:struct
@@ -3345,3 +3350,337 @@ Func<int,int> fun2 = Fun2;
 简单理解 委托就是装载传递函数的容器
 可以使用委托变量,来存储函数或者传递函数的
 系统已经提供了很多委托:Action:无返回值的委托 0~16,Func:有返回值的委托 0~16
+
+## 事件
+
+事件是基于委托的存在,是委托的安全包裹,让委托的使用更有安全性,事件是一种特殊的变量类型
+
+### 事件的使用
+
+声明语法:
+访问修饰符 event 委托类型 事件名
+
+1. 事件作为成员变量存在于类中
+2. 跟委托的用法相同
+   事件相对于委托的区别:
+3. 不能在类外部赋值
+4. 不能在类外部调用
+   注意:
+   只能作为成员存在于类的接口和结构体中
+
+```
+class Test
+{
+   //委托成员变量 用于存储函数的
+   public Action myFun;
+   //事件成员变量 用于存储 函数
+   public event Action myEvent;
+
+   public Test(){
+      myFun = TestFun();
+      myFun += TestFun;
+      myFun -= TestFun;
+
+   }
+}
+```
+
+### 事件和委托
+
+1. 事件是不能在类外部赋值的,但是委托可以
+2. 事件在外部虽然不能直接赋值,但是可以加减去添加移除记录的参数
+3. 委托可以在外面调用,事件不能,只能在类的内部去封装调用
+
+## 匿名函数
+
+没有名字的函数，主要是配合委托和事件使用，脱离委托和事件不会使用匿名函数
+
+### 基本语法
+
+```
+delegate (参数列表){
+
+}
+```
+
+何时使用?
+
+1. 函数中传递委托参数时
+2. 委托或事件赋值时
+
+### 使用
+
+1. 无参无返回
+
+```
+//只是声明,还未调用
+Action a = delegate(){
+ Console.WriteLine("匿名函数")
+}
+```
+
+2. 有参
+
+```
+Action<int,string> b = delegate(int a, string b){
+Console.WriteLine(a)
+}
+```
+
+3. 有返回值
+
+```
+Func<string> c = delegate (){
+ return "123123";
+}
+```
+
+4. 一般情况会作为参数传递，或作为函数返回值
+
+```
+Test t = new Test();
+t.Dosomething(100,delegate(){
+Console.WriteLine("");
+})
+```
+
+### 缺点
+
+因为匿名函数没有名字，所以无法指定移除某一个匿名函数
+
+主要是使用委托传递和存储时直接使用
+
+## lambda
+
+### 概念
+
+lambad 可以理解为匿名函数的简写，除了写法不同外，使用上和匿名函数一模一样，都是和委托或者事件配合使用的。
+
+```
+Action a = ()=>{
+
+}
+```
+
+### 语法
+
+```
+delegate (参数列表)
+{
+
+}
+lambda表达式
+(参数列表)=>{
+   函数体
+}
+```
+
+### 使用
+
+1. 无参无返回值的
+
+```
+Action a = () => {
+   Console.WriteLine("无参无返回值的lambda表达式")
+}
+```
+
+2. 有参
+
+```
+Action<int> a2 = (int value)=>{
+   Console.WriteLine("有参的")
+}
+```
+
+3. 参数类型可以省略，参数类型和委托或事件容器一致
+
+```
+Action<int> a3 = (value)=>{
+ Console.WriteLine("省略")
+}
+```
+
+4. 有返回值
+
+```
+Func<int,string> a4 = (value)=>{
+   return value.toString();
+}
+```
+
+使用和匿名函数一样，缺点也相同
+
+### 闭包
+
+内层的函数可以引用包含它在内的函数的变量，即使外层函数已经停止
+注意：变量提供的值并非创建变量时的值，而是在父函数范围内的值
+
+```
+public Test(){
+   int value = 10;
+   action += () =>{
+
+     Console.WriteLine(index);
+   }
+   for(int i =0; i<10,i++){
+     //打印10次10，因为打印的是最终的值
+     action += () =>{
+     Console.WriteLine(i);
+   }
+   }
+    for(int i =0; i<10,i++){
+     //打印1到10，因为打印的index每一次的最终值就等于i
+     int index = i；
+     action += () =>{
+     Console.WriteLine(index);
+   }
+   }
+}
+```
+
+## List 排序
+
+### List 自带的排序
+
+```
+//list 是1到是10的List
+list.Sort()升序排列
+```
+
+### 自定义类的排序
+
+```
+//必须继承接口来实现方法
+class Item : ICompareable<Item>{
+   public int money;
+   public Item(int money){
+      this.money = money;
+   }
+   public int CompareTo(Item other){
+      返回值的含义
+      //小于0，放在传入对象的前面
+      //等于零,保持位置不变
+      //大于零，放在传入对象的后面
+
+      //返回值的位置，一般0，-1，1；
+      return 0；
+
+   }
+}
+```
+
+### 通过委托来排序
+
+```
+
+static int SortShpoItem(ShopItem a,ShopItem b){
+ a.id>b.id?return 1:return -1;
+}
+//参数传入delegate类型
+shopItems.Sort(SortShopItem);
+//lambda
+shopItems.Sort(delegate (ShopItem a,ShopItem b){
+   a.id>b.id?return 1:return -1;
+
+});
+
+```
+
+## 协变和逆变
+
+### 协变
+
+outa
+和谐,自然的变化
+里氏替换,父类可以装子类
+object 可以装任何类型
+
+### 逆变
+
+in
+不和谐的变化,子类不能装父类
+object 不能转换成子类
+
+### 作用
+
+用来修饰泛型的,协变 out,逆变 in,只有泛型接口和泛型委托可以使用
+
+1. 返回值和参数
+   用 out 修饰的泛型只能作为返回值`delegate T TestOut<out T>();`
+   用 in 修饰的泛型只能作为参数 `delegates void TestIn<in T>(T t)`
+
+2. 结合里氏替换原则
+
+## 多线程
+
+### 进程
+
+是计算机中的程序关于某数据集合上的一次运行活动,是系统进行资源分配和调度的基本单位,是操作结构的基础.
+开启应用程序=开启进程
+
+### 线程
+
+操作系统进行运算调度的最小单位
+包含在进程之中,是进程中的实际运作单位
+一条线程指进程中单一程序的控制流,一个程序可以并发多个线程
+
+### 多线程
+
+可以通过代码开启新线程
+运行代码的多条管道,称为多线程
+
+### 语法
+
+线程类:Thread
+需要命名空间:`using System.Threading`
+
+1. 声明一个新线程
+   线程执行的代码需要封装到函数语句块中:
+   `Thread t = new Thread(NewThreadLogi);`
+   `t.Start();`
+2. 启动线程
+   `t.Start();`
+3. 设为后台线程
+   当前台程序结束了之后,整个程序也就结束了,即使有后台线程正在运行后台线程不会防止应用程序的进程被终止掉
+   如果不设置为后台线程,可能导致进程无法关闭
+   `t.IsBackground = true;`
+4. 开启关闭一个线程
+   如果开启的线程中不是死循环,是能够结束的逻辑,那么不用可以的去关闭它,如果是死循环,终止线程有两种方式
+
+   1. `isRunning = false`
+   2. 通过线程提供的方法(.Net core 版本无法中止,会报错)
+
+   终止线程
+   try{
+   t.Abort();
+   t.null;
+   }catch{
+
+   }
+
+5. 线程休眠
+   休眠多少毫秒,在哪个线程执行,就休眠哪个线程
+   `Thread.Sleep(1000);`
+
+### 线程之间共享数据
+
+多个线程内存是共享的,都属于该应用程序(进程)
+注意:当多线程同时操作同一片内存区域时可能会出问题
+可以通过加锁避免问题
+
+`lock(引用类型的对象)`
+当在多个进程中访问相同的东西进行逻辑处理时
+为了避免出错,可以加锁
+原理:当在多个线程中访问同样的东西
+
+```
+
+```
+
+互锁机制,首次执行锁住对象,其他对象等待其他进行运行之后解锁,再进行运行
+
+### 意义
+
+多线程专门处理一些复杂耗时的逻辑,比如寻路,网络通信
+
