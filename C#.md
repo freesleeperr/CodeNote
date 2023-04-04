@@ -3684,3 +3684,327 @@ object 不能转换成子类
 
 多线程专门处理一些复杂耗时的逻辑,比如寻路,网络通信
 
+## 预处理指令
+
+编译器时一种翻译程序,它用于将源语言程序翻译为目标语言程序
+
+源语言程序:某种程序设计语言写成的,比如 C#,C,c++
+目标语言程序:二进制数表示的伪代码写的程序
+
+### 概念
+
+预处理指令:指导编译器再实际编译之前进行预处理
+预处理器指令:都是以#开始
+预处理器不是语句,所以他们不以;结束
+`#endregion`
+
+### 常见预处理器指令
+
+1.  #define
+    定义一个符号,类似一个没有值的变量
+    #undefine
+    取消 define 定义的符号,让其失效
+    两者都是写在脚本文件最前面
+    配合 if 使用或配合特性
+2.
+
+```
+#if
+#elif
+#else
+#endif
+```
+
+和 if 语句规则一样,一般配合#undefine 定义的符号使用
+用于告诉编译器进行编译代码的流程控制
+
+```
+#if Unity4
+Console.WriteLine("unity4 version")
+#elif Unity2017
+//或者报错
+//#warning
+//#error
+Console.WriteLine("unity2017version")
+#endif
+
+```
+
+3.  #warning
+    #error
+    告诉编译器是报警还是报错,一般配合 if 使用
+
+## 编译器
+
+### 程序集
+
+是一种翻译程序,用原图将源语言程序翻译成目标语言程序
+.dll,.exe 都是程序集
+
+程序集就是一个代码集合包括所有代码
+最终都会翻译为一个程序集
+比如代码库 dll 或者可执行文件 exe
+
+### 元数据
+
+程序的类,类中的函数,变量就是程序的元数据
+有关程序以及类型的数据称为元数据,保存在程序集中
+
+### 反射的概念
+
+程序运行时,可以查看其他程序集或者自身的元数据
+一个运行的程序查看本身或者其他程序的元数据的行为就叫做反射
+在程序运行时吗,通过反射可以得到其他程序集或者自己程序集代码的各种信息
+类,函数,变量,对象等等,实例化他们,执行他们,操作他们
+
+### 反射的作用
+
+在程序运行时,通过反射可以在程序编译后获得信息,提高程序的拓展性和灵活性
+
+1. 程序运行时得到所有元数据,包括元数据的特性
+2. 程序运行时,实例化对象,操作对象
+3. 程序运行时创建新对象,用这些对象执行任务
+
+```
+
+```
+
+### 语法相关
+
+type(类的信息类)
+他是反射功能的基础
+是访问元数据的主要方式
+使用 type 的成员获取有关类型声明的信息
+有关类型的成员(如构造函数,方法,字段,属性和类的事件)
+
+#### 获取 Type
+
+1. 万物之父 object 中的 GetType()可以获取对象的 Type
+
+```
+int a = 42;
+Type type = a.GetType();
+Console.WriteLine(type);
+```
+
+2. 通过 typeof 关键字,传入类名,也可以得到对象的 type
+
+```
+Type type2 = typeof(int);
+
+```
+
+3. 通过类的名字也可以获取类型
+   注意,类名必须包含命名空间不然找不到
+   `Type type3 = Type.GetType("System.Int32");`
+
+#### 得到类的程序集信息
+
+`Console.WriteLine(type.Assembly);`
+
+#### 获取类的所有公共成员
+
+首先得到 Type
+
+```
+Type t = typeof(Test);
+//然后得到所有公共成员
+//需要引用命名空间 using System.Reflection;
+MemberInfo[] infos = t.GetMembers();
+for(int i = 0; i < infos.Length; i ++){
+Console.WriteLine(infos[i]);
+}
+```
+
+#### 获取类的公共构造函数并调用
+
+1. 获取所有构造函数
+
+   ```
+   ConstructorInfo[] ctors = t.GetConstructors();
+   for(int  i = 0; i<ctors.Length;i++){
+   Console.WriteLine(ctors[i]);
+   }
+   ```
+
+2. 获取其中一个构造函数并执行
+   得到构造函数传入 type 数组,数组内容按顺序是参数类型
+   执行构造函数传入 object 数组,表示按顺序传入的参数
+   2-1 得到无参构造
+   `ConstructorInfo info = t.GetConstructor(new Type[0])`
+   执行无参构造
+   `Test obj = info.Invoke(null) as Test;`
+
+   2-2 得到有参构造
+
+```
+ConstructorInfo info2 = t.GetConstructor(new Type[]{type(int)});
+obj = info2.Invoke(new objecto[]{2}) as Test;
+
+ConstructorInfo info3 = t.GetConstructor(new Type[] {typeof(int),typeof(string)});
+obj = info3.Invoke(new object[] {4,"44444"}) as Test;
+Console.Write(obj.str);
+
+
+```
+
+### 获取类的公共成员变量
+
+1. 得到所有成员变量
+
+```
+FieldInfo[] fieldInfos = t.GetFields();
+for(int i= 0;i<fieldInfos.Length;i++){
+Console.WriteLine(fieldInfo[i]);
+}
+```
+
+2. 得到指定名称的公共成员变量
+
+```
+FieldInfo infoJ = t.GetField("j");
+Console.WriteLine(infoJ);
+```
+
+3. 通过反射获取和设置对象的值
+
+```
+Test test = new Test();
+test.j = 99;
+test.str = "2222";
+//通过反射获取某个变量的值
+Console.WriteLine(infoJ.GetValue(test));
+//通过反射获取指定对象某个变量的值
+infoJ.SetValue(test,100);
+Console.WriteLine(infoJ.GetValue(test));
+```
+
+### 获取类的公共成员方法
+
+通过 Type 类中的 GetMethod 方法得到类中的方法
+MethodInfo 是方法的反射信息
+
+1. 如果存在方法重载 用 Type 数组表示参数类型
+
+```
+Type strType = typeof(string);
+MethodInfo[] methods = strType.GetMethods();
+for(int i = 0;i<methods.Length;i++>){
+Console.WriteLine(methods[i]);
+}
+MethodInfo subStr = strType.GetMethod("substring",new Type[]{tyepof(int),type(int)} );
+```
+
+2. 调用该方法
+   如果是静态方法,Invoke 中的第一个参数传 null 即可
+
+```
+string str ="hello,world";
+//第一个参数,相当于哪个对象要执行这个成员方法
+object result subStr.Invoke(str,new object[]{7,5});
+Console.WriteLine(result);
+```
+
+## 反射 Assembly Activator
+
+### Activator
+
+用于快速实例化的类
+用于将 Type 对象快速实例化为对象
+先得到 Type，然后快速实例化对象
+
+```
+Type testType = type(Test);
+//无参构造
+Test testObj = Activator.CreatInstance(testType) as Test;
+//有参构造
+Test testObj = Activator.CreatInstance(testType,99) as Test;
+//如果不符合参数类型,会报错
+testObj = Activator.CreatInstance(testType,55,"112233") as Test;
+```
+
+### Assembly
+
+程序集类
+主要用来加载其他程序集,加载后才能使用 Type 来使用其他程序集中的信息
+如果想要使用不是自身程序集中的信息,需要先加载程序集
+比如 dll
+简单的把库看成代码仓库,提供一些使用者一些可以直接拿来用的变量,函数和类
+
+三种加载程序集的函数
+一般用来加载同一文件下的其他程序集
+Assembly assembly2 = Assembly.Load("程序集名称")
+
+一般用来加载不在同一文件下的其他程序集
+Assembly assembly = Assembly.LoadFrom("包含程序集清单文件的名称或路径");
+Assembly assembly = Assembly.LoadFile("要加载的文件的完全限定路径");
+
+1. 先加载一个指定程序集
+   Assembly assembly = Assembly.LoadFrom("路径");
+
+2. 再加载程序集中的一个类对象,之后才能使用反射
+   Type icon = assembly.GetType("lesson18");
+   MemberInfo[] members = icon.GetMembers();
+   通过反射实例化一个 icon 对象
+   首先得到枚举 type 来得到可以传入的参数
+
+Type moveDir = assembly.GetType("lesson17");
+FieldInfo right = moveDir.GetField("right");
+
+直接实例化对象
+object iconObj = Activator.CreateInstance(icon,10,5,right.GetValue(null));
+MethodInfo move = icon.GetMethod("move");
+
+### 总结
+
+反射:程序运行时,可以得到其他程序集或者自己的程序集代码的各种信息
+类,函数,变量,对象等等,实例化他们,执行他们,操作他们
+
+关键类:Type
+Assembly
+Activator
+
+## 特性
+
+是一种允许我们向程序的添加元数据的语言结构
+他是用于保存程序结构信息的某种特殊类型的类
+
+特性提供功能强大的方法于 C# 代码相关联
+特性于程序实体关联后,既可以再在运行时使用反射查询特性信息
+
+特性本质时是类,可以利用特性为元数据添加额外信息
+比如一个类,成员变量.成员方法等等为他们添加更多的额外信息
+
+### 自定义特性
+
+```
+class MyAttribute:Attribute{
+   public string info;
+}
+```
+
+### 特性的使用
+
+基本语法：
+[特性名（参数列表)]
+本质上，就是在调用特性类的构造函数
+写在：类，函数,变量上一行，表示他们具有该特性信息
+
+```
+[MyCustom("自定义类")]
+class MyClass{
+[MyCustom("这是一个成员变量")]
+public int value;
+[MyCustom("这是一个计算加法的函数")]
+public void TestFun([MyCustom("函数参数")] int a){
+
+}
+}
+```
+
+## 迭代器
+
+迭代器又称为光标,是现代程序设计的设计模式
+提供一个方法顺序访问一个聚合对象中的各个元素,而又部暴露内部的标识
+
+从表现效果看,是可以在容器对象,例如列表
