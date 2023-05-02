@@ -324,32 +324,29 @@ transform.LookAt(Vector3.zero);
         //son.SetAsLastSlibing();
         //超出范围会直接设置为最后一个对象
 
-
-
+```
 
 ## 坐标转换
 
 ```
 
-        //世界坐标转本地坐标
-        print(Vector3.forward);
-        //点转换之后
-        print("转换后的点"+transform.InverseTransformPoint(Vector3.forward));
-        //方向转换之后
-        print("转换后的方向"+transform.InverseTransformDirection(Vector3.forward));
-        //受缩放影响的方向
-        print("转换后的方向" + transform.InverseTransformVector(Vector3.forward));
+//世界坐标转本地坐标
+print(Vector3.forward);
+//点转换之后
+print("转换后的点"+transform.InverseTransfor(Vector3.forward));
+//方向转换之后
+print("转换后的方向"+transform.InverseTransformDirection(Vector3.forward));
+//受缩放影响的方向
+print("转换后的方向" + transform.InverseTransformVector(Vector3.forward));
 
-        //本地坐标转世界坐标
-        //本地点转世界点
-        print("本地转世界点" + transform.TransformPoint(Vector3.forward));
+//本地坐标转世界坐标
+//本地点转世界点
+print("本地转世界点" + transform.TransformPoint(Vector3.forward));
 
-        //本地方向转世界方向
-        //不受缩放影响
-        print("转换后的方向" + transform.TransformDirection(Vector3.forward));
-        //受缩放影响
-        print("本地转世界方向" + transform.TransformVector(Vector3.forward));
-
-
+//本地方向转世界方向
+//不受缩放影响
+print("转换后的方向" + transform.TransformDirection(Vector3.forward));
+//受缩放影响
+print("本地转世界方向" + transform.TransformVector(Vector3.forward));
 
 ```
