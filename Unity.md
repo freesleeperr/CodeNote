@@ -350,3 +350,136 @@ print("转换后的方向" + transform.TransformDirection(Vector3.forward));
 print("本地转世界方向" + transform.TransformVector(Vector3.forward));
 
 ```
+
+## 输入
+
+````
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        print(Input.mousePosition);
+        string[] strs = Input.GetJoystickNames();
+
+
+        foreach (string str in strs)
+        {
+
+            print(str);
+        }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+        //检测键盘输入
+        if (Input.GetKeyDown(KeyCode.W)) {
+            print("w");
+        }
+        //字符串重载,只能传小写
+        if(Input.GetKeyDown("space"))
+        {
+            print("w键抬起");
+        }
+        //键盘长按
+        if (Input.GetKey(KeyCode.W))
+        {
+            print("w按下");
+        }
+
+        //检测默认轴
+        //unity 提供了更方便的方法
+
+        //键盘AD按下时 返回-1到1之间的变换
+        //键盘SW按下时 返回-1到1之间的变换
+        //鼠标横向移动 -1到1左右
+        //鼠标竖向移动 -1到1下上
+
+        //GetAxisRaw方法 和GetAxis使用方式相同
+
+        //只不过他的返回值只会是-1 0 1 不会有中间值
+        //水平
+       // print(Input.GetAxis("Horizontal"));
+        //垂直
+        //print(Input.GetAxis("Vertical"));
+        //鼠标水平
+        //print(Input.GetAxis("Mouse X"));
+        //鼠标垂直
+       // print(Input.GetAxis("Mouse Y"));
+
+        //默认的GetAxisRaw方法 无渐变只返回 -1 0 1
+
+
+        //是否有任意键或者鼠标长按
+        //if (Input.anyKey)
+        //{
+           // print("有一个键长按");
+        //}
+        //是否有任意键或者鼠标按下
+        //if (Input.anyKeyDown)
+        //{
+           // print("有一个键按下");
+            //print(Input.inputString);
+        //}
+
+        //手柄输入相关
+        if (Input.GetKeyDown(KeyCode.JoystickButton0))
+        {
+            print("Jump");
+        }
+        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            print("Atk");
+        }
+        //某一个手柄键按下
+
+
+        //移动设备触摸相关
+        if (Input.touchCount > 0)
+        {
+            //手指输入内容
+            Touch t1 = Input.touches[0];
+        }
+
+        //多点触控开关
+        Input.multiTouchEnabled = false;
+
+        //陀螺仪
+        Input.gyro.enabled = true;
+        //重力加速度向量
+        print(Input.gyro.gravity);
+        //旋转速度
+        print(Input.gyro.rotationRate);
+
+    }
+    ```
+
+````
+
+## 屏幕
+
+```
+        //��ǰ��ʾ���ֱ���
+        print(Screen.currentResolution.ToString());
+        //���ڷֱ���
+        print(Screen.width.ToString());
+        print(Screen.height.ToString());
+        //��Ļ����ģʽ
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        //ȫ��MODE
+        Screen.fullScreen = true;
+        //��ռ
+        Screen.fullScreenMode = FullScreenMode.Windowed;
+
+        //�ƶ��豸��Ļת�����
+        //�����Զ���תΪ����� Home������
+        Screen.autorotateToLandscapeLeft = true;
+        //������ת
+        Screen.autorotateToPortrait= true;
+
+        //ָ����Ļ��ʾ����
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+```
