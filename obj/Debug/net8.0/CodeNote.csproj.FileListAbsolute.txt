@@ -1,0 +1,15 @@
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.GeneratedMSBuildEditorConfig.editorconfig
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.AssemblyInfoInputs.cache
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.AssemblyInfo.cs
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.csproj.CoreCompileInputs.cache
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.sourcelink.json
+/Users/liqingrui/Desktop/CodeNote/bin/Debug/net8.0/CodeNote
+/Users/liqingrui/Desktop/CodeNote/bin/Debug/net8.0/CodeNote.deps.json
+/Users/liqingrui/Desktop/CodeNote/bin/Debug/net8.0/CodeNote.runtimeconfig.json
+/Users/liqingrui/Desktop/CodeNote/bin/Debug/net8.0/CodeNote.dll
+/Users/liqingrui/Desktop/CodeNote/bin/Debug/net8.0/CodeNote.pdb
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.dll
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/refint/CodeNote.dll
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.pdb
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/CodeNote.genruntimeconfig.cache
+/Users/liqingrui/Desktop/CodeNote/obj/Debug/net8.0/ref/CodeNote.dll
